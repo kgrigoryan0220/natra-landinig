@@ -1,0 +1,238 @@
+{
+  "lang": "en",
+  "ogLocale": "en_US",
+
+  "ui": {
+    "skip": "Skip to content",
+    "nav": {
+      "ask": "Ask the chart",
+      "layers": "Inside",
+      "compatibility": "Compatibility",
+      "support": "Support",
+      "label": "Main"
+    },
+    "homeLabel": "Natra, home",
+    "storeSoon": "Coming soon",
+    "appStore": "App Store",
+    "appStoreFull": "Coming soon to the App Store",
+    "googlePlay": "Google Play",
+    "googlePlayFull": "Coming soon to Google Play",
+    "appStoreLink": "Download on the App Store",
+    "googlePlayLink": "Get it on Google Play",
+    "storesLabel": "Download Natra",
+    "updated": "Updated",
+    "documentLabel": "Document",
+    "contents": "Contents",
+    "backToTop": "Back to top"
+  },
+
+  "footer": {
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "support": "Support",
+    "disclaimer": "For entertainment and self-reflection. Not medical, legal or financial advice."
+  },
+
+  "landing": {
+    "meta": {
+      "title": "Natra — Birth Chart, Horoscope & Love Compatibility",
+      "description": "Natra is personal astrology built on your birth chart: a daily horoscope about you, love compatibility, a portrait of who you are and clear answers to yes-or-no questions. Coming to iPhone and Android."
+    },
+
+    "hero": {
+      "eyebrow": "Birth chart · Horoscope · Compatibility",
+      "title": "Natra",
+      "promise": "A personal astrologer that explains, not scares.",
+      "lead": "Your date, time and place of birth become your birth chart. Natra turns it into clear daily hints, a portrait of who you are, love compatibility and answers to the questions on your mind.",
+      "note": "Coming to iPhone and Android.",
+      "phonesLabel": "Natra app screens"
+    },
+
+    "ask": {
+      "eyebrow": "Ask the chart",
+      "title": "Ask a question. Get a clear answer.",
+      "lead": "Will this relationship work out? Should you take the job? Type a yes-or-no question. Natra casts the chart of the minute you ask and reads it for you: a verdict, how confident the reading is, what it means in plain words and the key factors behind it.",
+      "steps": [
+        {
+          "title": "Your question",
+          "text": "One concrete thing: a person, an offer, a move. Ask it so it can be answered yes or no.",
+          "data": "“Will this opportunity work out for me?”",
+          "dataStyle": "quote"
+        },
+        {
+          "title": "The chart of the moment",
+          "text": "The chart is cast for the date, time and place where you ask. That moment is where the answer comes from.",
+          "data": "17 MAY 2026 · 14:30 · NEW YORK",
+          "dataStyle": "mono"
+        },
+        {
+          "title": "The significators",
+          "text": "Natra finds the planets that stand for you and for what you asked about, then reads their dignity, combustion and aspects.",
+          "data": "DIGNITY · COMBUSTION · ASPECTS",
+          "dataStyle": "mono"
+        },
+        {
+          "title": "The verdict",
+          "text": "Yes, no, maybe or not yet, with a confidence score, a short reading, what to do next and the factors that shaped it.",
+          "data": "YES · 78%",
+          "dataStyle": "verdict"
+        }
+      ],
+      "footnote": "The same question within 24 hours gets the same answer. Some topics, like health or death, are not for the chart.",
+      "screenAlt": "Natra answer screen: the question “Will this opportunity work out for me?”, a YES verdict with 78% confidence, the reading and key factors."
+    },
+
+    "layers": {
+      "eyebrow": "Three layers",
+      "title": "Start with today. Go as deep as you like.",
+      "lead": "Everything in Natra comes from one calculation: your birth chart. You decide how far to read.",
+      "items": [
+        {
+          "label": "01 · Today",
+          "title": "A daily ritual",
+          "text": "A short hint on Home every day. With Natra Pro, open the full forecast — mood, relationships, work, money and your best hours — look ahead with the week view and see which transits are active.",
+          "tags": ["Hint of the day", "This week", "Transits"]
+        },
+        {
+          "label": "02 · Your chart",
+          "title": "Your birth chart, explained simply",
+          "text": "The wheel of your natal chart and a card for every planet and point: the sign, the house and what it says about you, in everyday words. Start with your Sun, Moon and Rising.",
+          "tags": ["Chart wheel", "Big three", "Every placement"]
+        },
+        {
+          "label": "03 · Deeper",
+          "title": "When you want the whole story",
+          "text": "The full portrait — your main themes, love, work, talents and shadow side. Compatibility with the people in your life. And questions to the chart when you need a clear answer.",
+          "tags": ["Full portrait", "Compatibility", "Questions"]
+        }
+      ],
+      "homeAlt": "Natra Home screen: today's guidance, a colour-coded week and planets in motion.",
+      "chartAlt": "Natra chart screen: a natal chart wheel for 12 Oct 1994, 14:42, Berlin, and a card for Sun in Gemini in the 9th house."
+    },
+
+    "compatibility": {
+      "eyebrow": "Love compatibility",
+      "title": "Chart to chart, not sign to sign.",
+      "lead": "Add your partner's birth details and see how your two charts meet. This is synastry: your charts read together, not just two zodiac signs side by side.",
+      "points": [
+        {
+          "title": "Your match",
+          "text": "One percentage with a short summary of you as a pair."
+        },
+        {
+          "title": "Areas and dimensions",
+          "text": "Emotional connection, love and romance, communication and a shared future — where the bond is strong and where it has room to grow."
+        },
+        {
+          "title": "Your partner's chart",
+          "text": "Their details in one place, and their full chart a tap away."
+        }
+      ],
+      "screenAlt": "Natra compatibility screen: You + Alex, a 78% match, areas of connection and compatibility dimensions."
+    },
+
+    "faq": {
+      "eyebrow": "Questions",
+      "title": "Before you start",
+      "items": [
+        {
+          "q": "What do I need to start?",
+          "a": "Your date of birth, and ideally the time and place. The time is optional, but with it Natra can work out your Rising sign and houses."
+        },
+        {
+          "q": "What is free and what is paid?",
+          "a": "Your chart and a short daily hint come at no cost. Natra Pro, a subscription, unlocks the full daily forecast, the week view and transits. The full portrait, compatibility reports and packs of questions are one-time purchases. Prices are shown in the app before you buy."
+        },
+        {
+          "q": "Is this a prediction?",
+          "a": "No. Natra is for reflection and entertainment. It shows what your chart describes and leaves the decisions to you. It is not medical, legal or financial advice."
+        },
+        {
+          "q": "What happens to my data?",
+          "a": "Your birth details are used to calculate your chart and readings. Your data is not sold and not used for advertising, and you can delete your account in the app at any time. The details are in the [Privacy Policy](/privacy)."
+        }
+      ],
+      "more": "More answers on the Support page"
+    },
+
+    "closing": {
+      "title": "Your chart, read in plain words.",
+      "text": "Natra is coming to iPhone and Android."
+    }
+  },
+
+  "support": {
+    "meta": {
+      "title": "Support — Natra astrology app",
+      "description": "Help with Natra: contact support, cancel a subscription, restore purchases, edit birth details, delete your account, refunds and how questions to the chart work."
+    },
+    "eyebrow": "Support",
+    "title": "How can we help?",
+    "lead": "Write to us about anything: a bug, a purchase, your account or your data. Tell us which phone you use and what happened; a screenshot helps.",
+    "emailLabel": "Email",
+    "copy": "Copy email",
+    "copied": "Email copied",
+    "copyFailed": "Select the address and copy it",
+    "mailto": "Open in mail app",
+    "faqTitle": "Frequently asked",
+    "items": [
+      {
+        "id": "cancel-subscription",
+        "q": "How do I cancel my subscription?",
+        "a": "Subscriptions are managed by Apple or Google, so you cancel them in your store account, not inside Natra.\n\n**iPhone:** open Settings → [your name] → Subscriptions, choose Natra and tap Cancel Subscription.\n\n**Android:** open Google Play, tap your profile icon, then Payments & subscriptions → Subscriptions, choose Natra and tap Cancel subscription.\n\nCancel at least 24 hours before the current period ends to avoid the next charge. Deleting the app does not cancel a subscription, and neither does deleting your Natra account."
+      },
+      {
+        "id": "restore-purchases",
+        "q": "How do I restore my purchases?",
+        "a": "Sign in to the same Natra account you used when you bought, open Profile and tap Restore purchases. On a new phone, use the same Apple ID or Google account as before."
+      },
+      {
+        "id": "birth-details",
+        "q": "How do I change my birth details?",
+        "a": "Open Profile and edit your birth details there: date, time and place of birth. Your chart and readings are based on these details."
+      },
+      {
+        "id": "delete-account",
+        "q": "How do I delete my account?",
+        "a": "Open Profile → Delete account. This permanently removes your Natra account and the data linked to it: birth details, portrait, compatibility reports, questions and answers. Question credits and compatibility reports are deleted too and cannot be restored. Deletion cannot be undone.\n\nDeleting your account does not cancel an active subscription — cancel it in your store account first. Purchases made through Apple or Google stay in your store account."
+      },
+      {
+        "id": "questions",
+        "q": "How do questions to the chart work?",
+        "a": "Ask about one concrete thing in a yes-or-no form. Natra casts the chart of the moment and place you ask and answers yes, no, maybe or not yet, with a confidence score and the key factors.\n\nIf you ask the same question again within 24 hours, you get the same answer: the chart of the moment does not change because you ask twice.\n\nThe chart does not answer questions about death, health and similar topics. For those, please talk to a qualified professional."
+      },
+      {
+        "id": "refunds",
+        "q": "Can I get a refund?",
+        "a": "All payments go through Apple or Google, so refunds are handled by them under their rules:\n\n- **App Store:** [request a refund from Apple](https://support.apple.com/en-us/118223)\n- **Google Play:** [request a refund from Google](https://support.google.com/googleplay/answer/2479637)\n\nIf something went wrong with a purchase, write to us as well — we will help you sort it out."
+      },
+      {
+        "id": "data",
+        "q": "Where is my data and who can see it?",
+        "a": "Your account, birth details and readings are stored on our servers and with the providers that help us run Natra; they process data only for us. Your data is not sold and not used for advertising. The full list of what is collected, where it is stored and your rights is in the [Privacy Policy](/privacy)."
+      }
+    ],
+    "disclaimer": "Natra is for entertainment and self-reflection. If you are in crisis or need professional help, contact qualified local services."
+  },
+
+  "notFound": {
+    "meta": {
+      "title": "Page not found — Natra",
+      "description": "This page does not exist."
+    },
+    "code": "404",
+    "title": "This page isn't in the chart.",
+    "text": "The link may be old or mistyped.",
+    "home": "Go to the home page",
+    "support": "Contact support"
+  },
+
+  "legal": {
+    "privacy": {
+      "description": "How Natra collects, uses, stores and shares information, and your choices and rights."
+    },
+    "terms": {
+      "description": "The terms that govern your use of the Natra app: subscriptions and purchases, acceptable use, disclaimers and more."
+    }
+  }
+}

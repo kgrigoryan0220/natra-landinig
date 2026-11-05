@@ -1,0 +1,24 @@
+{
+  "name": "natra-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static website for the Natra app: landing, Privacy Policy, Terms of Use, Support.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check-legal.mjs",
+    "preview": "serve dist -l 4321",
+    "og": "node scripts/make-og.mjs",
+    "crop-framed": "node scripts/crop-framed.mjs",
+    "shots": "node scripts/page-screenshots.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "marked": "^15.0.12",
+    "node-html-parser": "^7.1.0",
+    "serve": "^14.2.6",
+    "sharp": "^0.34.5"
+  }
+}

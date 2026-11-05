@@ -32,7 +32,7 @@
 - Весь JavaScript на сайте — около 40 строк для кнопки «Copy email» на странице поддержки.
 - Анимация одна: медленный дрейф звёздной пыли (слой сдвигается за 260 секунд, только через `transform`). При `prefers-reduced-motion` она выключается.
 - Шрифты те же, что в приложении (по `pubspec.yaml`): **Cormorant Garamond** для заголовков, **DM Sans** для текста, **DM Mono** для дат и данных. Это файлы woff2 с латиницей, лицензии OFL лежат рядом.
-- Палитра из кейс-стади: Night `#0B0B10`, Surface `#13121B`, Stroke `#322F50`, Lavender `#9B8FFF`, Peach `#FFD5C5`, Gold `#C8AB84`. Зелёный, жёлтый и красный встречаются только там, где есть оценка: вердикт «YES · 78%» и разметка недели.
+- Палитра и компоненты взяты из дизайна приложения (прототип `Astro_App_current_standalone`, редизайн `.mx`), подробности — в разделе «Редизайн v2» ниже. Зелёный, жёлтый и красный встречаются только там, где есть оценка: вердикт, недельная полоса и плашки факторов.
 - Заголовки безопасности в `dist/_headers`: CSP только `'self'`, `X-Frame-Options` и другие. Их понимают Cloudflare Pages и Netlify.
 
 ## Тексты лендинга (en) — на вычитку
@@ -140,8 +140,8 @@
 |---|---|---|---|
 | `home.png` | Home: Today's guidance, This week, Planets in motion | Hero, левый телефон | Да, плановая замена. На кадре есть кнопка «Read full forecast»: если в текущей версии она ведёт за пейвол, лучше взять кадр без неё |
 | `chart-wheel.png` | Your chart: колесо, карточка Sun · Gemini | Hero, центр; картинка для соцсетей | **Да, в первую очередь.** На исходнике была ссылка «Ask AI →», которой в приложении нет. Я закрасил её цветом карточки, а новый кадр её снимет совсем |
-| `ask-verdict.png` | Ask: вердикт YES 78 %, The reading, Key factors | Hero, правый; блок «Ask the chart»; картинка для соцсетей | Да, если экран вердикта изменился |
-| `compatibility.png` | You + Alex: 78 % match, сферы и измерения | Блок «Love compatibility» | Да, если экран изменился |
+| `ask-verdict.png` | Ask: вердикт YES 78 %, The reading, Key factors | Блок «Ask the chart»; картинка для соцсетей | Да, если экран вердикта изменился |
+| `compatibility.png` | You + Alex: 78 % match, сферы и измерения | Hero, правый телефон | Да, если экран изменился |
 
 **Не использованы:**
 - «Your Full Portrait / The Sage / The Jester»: архетипов в нынешнем портрете нет, это прямо сказано в задании.
@@ -162,7 +162,7 @@ Lighthouse 12.8.2, headless Chromium, сайт отдавался через `np
 | `/support` | мобильный | 100 | 100 | 100 | 100 |
 | `/404` | мобильный | 100 | 100 | 100 | 66 — так задумано: `noindex` |
 
-Главная, мобильный режим: FCP 1,5 с · LCP 2,2–2,3 с · TBT 0 мс · CLS 0. Полный отчёт: `reports/30-site/lighthouse-home-mobile.html`.
+Главная, мобильный режим (после редизайна v2): **98–99 / 100 / 100 / 100**, FCP 1,2 с · LCP 2,2 с · TBT 0–10 мс · CLS 0. Полный отчёт: `reports/30-site/lighthouse-home-mobile.html`.
 
 Остались два мелких замечания. «Cache policy» появляется потому, что `serve` не читает `_headers`: на Cloudflare ассеты кешируются на год. «Render-blocking» — это один CSS-файл на 6 КБ (gzip). Встроить его в HTML мешает строгий CSP.
 
@@ -196,3 +196,63 @@ Lighthouse 12.8.2, headless Chromium, сайт отдавался через `np
 10. **Адреса страниц без `.html` и без слеша** (`/privacy`): файлы собираются как `privacy.html`, и Cloudflare Pages, Netlify и `serve` отдают их по чистым адресам. Канонические ссылки сделаны так же.
 11. **`dist/` не коммитится**: папку собирает `npm run build` локально или Cloudflare при подключении через GitHub.
 12. **Работа в облачной сессии.** Задание писалось под `~/Desktop/natra-site`, но эта сессия работает в облаке с репозиторием `kgrigoryan0220/natra-landinig`. Исходники пришли в чат. Владелец разрешил push в ветку `claude/new-session-zy2pvy`, создание ветки `main` и draft PR. Деплоя и регистраций в сервисах не было. Отчёт и скриншоты лежат в `reports/` этого репозитория, а не в `~/Desktop/natra_night/reports/`: оттуда их можно скопировать.
+
+## Редизайн v2 — на компонентах приложения
+
+Владелец прислал дизайн приложения: интерактивный прототип в HTML, 5 вкладок, шторки, онбординг. В нём два поколения стилей:
+- Home и Chart — старые: DM Serif Display и Inter;
+- экраны с пометкой `.mx` — Ask, Match, полный портрет, шторки. Они переведены на Cormorant, DM Sans и DM Mono, то есть на шрифты из `pubspec.yaml`.
+
+Лендинг собран на языке `.mx` как на актуальном.
+
+**Токены (из `.mx`):**
+- фон `#0A0A0F`;
+- плашки `#12111A`, при наведении `#15131F`;
+- дорожки и поля `#1C1A28`;
+- обводка `rgba(155,143,255,.12)`;
+- акцент `#9B8FFF`, свечение `#5E3EF3`;
+- тёплые метки `#FFD5C5`;
+- текст `#F0EEF8` и `#8B89A0`;
+- семантика `#4CAF7D` / `#E8A838` / `#E05555`;
+- радиусы 12 / 16 / 24.
+
+**Типографика:**
+- Cormorant 600 — заголовки;
+- Cormorant italic 300 — обещание и вопросы;
+- DM Sans 500, 11 px, капс с разрядкой .14em — метки (`mx-micro`);
+- DM Mono — даты и данные.
+
+**Компоненты на лендинге — вёрстка, а не картинки:**
+
+| Блок сайта | Компонент приложения |
+|---|---|
+| Ask the chart, шаг 1 | пузыри популярных вопросов (`ask-chip`, через один слева и справа) |
+| шаг 2 | карточка «Chart cast» (`ask-chart-moment`) |
+| шаг 3 | плашки «Key factors» (`ask-factor`) |
+| шаг 4 | бейдж вердикта YES и полоса уверенности (`ask-answer-badge`, `ask-conf-bar`) |
+| Three layers, Today | карточка «Today's guidance» со свечением и ✦, недельная полоса с легендой, транзит с бейджем STRONG |
+| Your chart | карточка планеты (`portrait-card`: «SUN · GEMINI», «9th House») |
+| Deeper | карточки пар «You + Alex 78 %» (`mx-mcard`) |
+| Compatibility | кольцо совпадения (`mx-ring`), «Strong Connection», «Their info», сферы связи (`mx-conn`), измерения с полосками (`mx-dim`, `mx-bar`) |
+| FAQ лендинга | аккордеон профиля (`faq-item`, шеврон поворачивается) |
+| Support | меню в стиле профиля (`settings-row` с иконкой в квадрате), основная кнопка — градиент приложения (`mx-btn-primary`), второстепенная — контур (`mx-btn-secondary`) |
+| 404 | круг «void» из экрана «вопрос нельзя прочитать» (`ask-void-icon`) |
+| Документы | пилюля с датой в DM Mono, оглавление и таблицы на плашках |
+
+**Что изменилось помимо стилей:**
+- Скриншоты: в hero теперь Home, колесо карты и совместимость, а экран вердикта — в блоке «Ask the chart». Блок совместимости собран из компонентов, без скриншота.
+- Иконки поддержки — простые линейные SVG. В прототипе там эмодзи, но эмодзи как маркеры на сайте не используем.
+- Из прототипа **не** перенесено то, что противоречит заданию: «Ask AI», «The stars will read the chart», цены и зачёркнутые цены, эмодзи в вопросах.
+- **FAQ поддержки.** Подписи пунктов взяты из экрана профиля в прототипе: «Edit birth data», «Restore Purchases», «Delete Account». Это прототип, а не код приложения. Если в приложении подписи другие, поправьте `content/en/site.json`.
+
+**Тексты демо-компонентов** (все в `content/en/site.json` → `demo`, это примеры интерфейса):
+- Popular questions: «Will this relationship work out?», «Should I take this opportunity?», «Is this the right time to move?»
+- Chart cast: «May 17, 2026 · 14:30», «New York, USA»
+- Key factors: «Both significators in dignity — strong ability to act»; «Ascendant ruler combust — some details may be hidden from view right now»
+- Verdict: «YES», «Confidence 78%»
+- Today's guidance: «A quiet morning will reveal what a busy one would have hidden.» «Based on Mercury trine natal Moon»; транзит «Mercury trine natal Moon — Clarity in feelings · communication flows easily — STRONG»
+- Your chart: «Sun · Gemini · 9th House — Curious by design — Your identity moves through questions, not answers. You're at your most alive when something new is on the table.»
+- Deeper: «You + Alex · Dec 14, 1996 · New York · 78%», «You + Sofia · Aug 21, 1998 · Paris · 91%»
+- Compatibility: «78% match — Strong Connection — A rare share of values with real, workable friction to grow through.» Their info: «Alex · Sagittarius · Dec 14, 1996 · New York · View chart →». Areas: Emotional depth, Shared humor, Creative synergy, Mutual ambition. Dimensions: Emotional connection 85%, Love & romance 61%, Communication 72%, Shared future 66%.
+
+Прежние тексты лендинга выше не менялись, кроме строк данных под шагами «Ask the chart»: их заменили компоненты.

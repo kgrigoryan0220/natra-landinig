@@ -55,7 +55,9 @@ async function main() {
   await write('img/stars-b.svg', starsSvg(640, 46, 29, 0.9));
 
   // CSS / JS with content hash
-  const css = await fs.readFile(path.join(SRC, 'styles/site.css'));
+  // Width utilities (.w-0 … .w-100) for bars and rings: the CSP forbids inline style attributes.
+  const widths = Array.from({ length: 101 }, (_, i) => `.w-${i}{--w:${i}%}`).join('');
+  const css = Buffer.concat([await fs.readFile(path.join(SRC, 'styles/site.css')), Buffer.from(`\n${widths}\n`)]);
   assets.css = `assets/site.${hash(css)}.css`;
   await write(assets.css, css);
   const js = await fs.readFile(path.join(SRC, 'scripts/site.js'));
@@ -259,8 +261,8 @@ async function buildIcons() {
     buf = await sharp(Buffer.from(PLACEHOLDER_ICON)).png().toBuffer();
   }
   const png = (size) => sharp(buf).resize(size, size).png().toBuffer();
-  const icon64 = await png(64);
-  const icon64File = `assets/icon-64.${hash(icon64)}.png`;
+  const icon64 = await sharp(buf).resize(64, 64).webp({ quality: 85 }).toBuffer();
+  const icon64File = `assets/icon-64.${hash(icon64)}.webp`;
   await write(icon64File, icon64);
   await write('apple-touch-icon.png', await png(180));
   await write('icon-192.png', await png(192));

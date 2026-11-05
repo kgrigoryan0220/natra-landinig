@@ -1,10 +1,33 @@
 // Page bodies. All visible text comes from content/<locale>/site.json or the legal .md files.
+// Components mirror the Natra app design (the ".mx" redesign: Cormorant / DM Sans / DM Mono).
 import { esc, attr } from '../../scripts/lib/html.mjs';
 import { storeButtons, phone } from './layout.mjs';
 
-const STAR = `<svg class="star" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0c.5 4.2 3.8 7.5 8 8-4.2.5-7.5 3.8-8 8-.5-4.2-3.8-7.5-8-8 4.2-.5 7.5-3.8 8-8Z"/></svg>`;
+/* ---------- Icons (stroke, currentColor) ---------- */
 
-/* ---------------- Landing ---------------- */
+const svg = (body, size = 20) =>
+  `<svg class="ico" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${body}</svg>`;
+
+const ICONS = {
+  card: '<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h4"/>',
+  restore: '<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4.5v4h4"/>',
+  edit: '<path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/>',
+  trash: '<path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13"/>',
+  star: '<path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z"/>',
+  refund: '<path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4.5v4h-4M12 8v8M9.5 10.2c0-1 1.1-1.7 2.5-1.7s2.5.7 2.5 1.7-1 1.5-2.5 1.8-2.5.8-2.5 1.8 1.1 1.7 2.5 1.7 2.5-.7 2.5-1.7"/>',
+  shield: '<path d="M12 3.5 5 6v5.5c0 4.3 3 7.6 7 9 4-1.4 7-4.7 7-9V6l-7-2.5Z"/><path d="m9 12 2 2 4-4"/>',
+  heart: '<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z"/>',
+  romance: '<circle cx="12" cy="14" r="6"/><path d="m9.5 4 2.5 3 2.5-3"/>',
+  talk: '<path d="M5 5.5h14v10H10l-4 3.5v-3.5H5v-10Z"/>',
+  future: '<circle cx="12" cy="12" r="8.5"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/>',
+  mail: '<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7 8 6 8-6"/>',
+};
+const icon = (name, size) => svg(ICONS[name] || '', size);
+const SPARK = `<svg class="spark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0c.5 4.2 3.8 7.5 8 8-4.2.5-7.5 3.8-8 8-.5-4.2-3.8-7.5-8-8 4.2-.5 7.5-3.8 8-8Z"/></svg>`;
+const SUN = `<svg class="pc-sym" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg>`;
+const CHEV = `<span class="chev" aria-hidden="true">›</span>`;
+
+/* ---------- Landing ---------- */
 
 export function homePage(ctx) {
   const { t, md } = ctx;
@@ -14,7 +37,7 @@ export function homePage(ctx) {
       <section class="hero" aria-labelledby="hero-title">
         <div class="wrap hero__grid">
           <div class="hero__copy">
-            <p class="eyebrow">${esc(L.hero.eyebrow)}</p>
+            <p class="micro">${esc(L.hero.eyebrow)}</p>
             <h1 id="hero-title" class="hero__title">${esc(L.hero.title)}</h1>
             <p class="hero__promise">${esc(L.hero.promise)}</p>
             <p class="hero__lead">${esc(L.hero.lead)}</p>
@@ -23,21 +46,29 @@ export function homePage(ctx) {
           <div class="hero__phones" role="group" aria-label="${attr(L.hero.phonesLabel)}">
             ${phone(ctx, 'home', L.layers.homeAlt, { eager: true, sizes: '(min-width: 1024px) 180px, 26vw', cls: 'phone--side phone--left' })}
             ${phone(ctx, 'chart-wheel', L.layers.chartAlt, { eager: true, priority: true, sizes: '(min-width: 1024px) 255px, 38vw', cls: 'phone--center' })}
-            ${phone(ctx, 'ask-verdict', L.ask.screenAlt, { eager: true, sizes: '(min-width: 1024px) 180px, 26vw', cls: 'phone--side phone--right' })}
+            ${phone(ctx, 'compatibility', L.compatibility.screenAlt, { eager: true, sizes: '(min-width: 1024px) 180px, 26vw', cls: 'phone--side phone--right' })}
           </div>
         </div>
       </section>`;
 
+  /* Ask the chart: four steps, each with the app component it produces */
+  const A = L.ask.demo;
+  const stepDemos = [
+    `<div class="chips" aria-hidden="true">${A.chips.map((c) => `<span class="q-chip">${esc(c)}</span>`).join('')}</div>`,
+    `<div class="plate cast" aria-hidden="true"><div><p class="micro">${esc(A.castLabel)}</p><p class="cast__date">${esc(A.castDate)}</p><p class="cast__place">${esc(A.castPlace)}</p></div>${castWheel()}</div>`,
+    `<div class="factors" aria-hidden="true">${A.factors
+      .map((f) => `<div class="plate factor"><span class="factor__ic is-${attr(f.tone)}">${f.tone === 'good' ? '✦' : '!'}</span><span>${esc(f.text)}</span></div>`)
+      .join('')}</div>`,
+    `<div class="verdict" aria-hidden="true"><span class="verdict__badge">${esc(A.verdict)}</span><span class="conf"><span class="conf__lbl">${esc(A.confidenceLabel)}</span><span class="bar bar--good"><span class="w-${A.confidence}"></span></span><span class="conf__pct">${A.confidence}%</span></span></div>`,
+  ];
   const steps = L.ask.steps
     .map(
       (s, i) => `
-              <li class="step">
-                <span class="step__num">${String(i + 1).padStart(2, '0')}</span>
-                <div class="step__body">
-                  <h3 class="step__title">${esc(s.title)}</h3>
-                  <p>${esc(s.text)}</p>
-                  <p class="step__data step__data--${attr(s.dataStyle)}">${esc(s.data)}</p>
-                </div>
+              <li class="card step">
+                <p class="step__num">${String(i + 1).padStart(2, '0')}</p>
+                <h3 class="step__title">${esc(s.title)}</h3>
+                <p class="step__text">${esc(s.text)}</p>
+                <div class="step__demo">${stepDemos[i]}</div>
               </li>`
     )
     .join('');
@@ -45,28 +76,48 @@ export function homePage(ctx) {
   const ask = `
       <section class="section" id="ask" aria-labelledby="ask-title">
         <div class="wrap">
-          <div class="panel panel--split">
-            <div class="panel__copy">
-              <p class="eyebrow">${esc(L.ask.eyebrow)}</p>
-              <h2 id="ask-title" class="h2">${esc(L.ask.title)}</h2>
-              <p class="lead">${esc(L.ask.lead)}</p>
-              <ol class="steps">${steps}
-              </ol>
-              <p class="footnote">${esc(L.ask.footnote)}</p>
-            </div>
-            <div class="panel__media">
+          <div class="section__head">
+            <p class="micro">${esc(L.ask.eyebrow)}</p>
+            <h2 id="ask-title" class="h2">${esc(L.ask.title)}</h2>
+            <p class="lead">${esc(L.ask.lead)}</p>
+          </div>
+          <div class="ask__grid">
+            <ol class="steps">${steps}
+            </ol>
+            <div class="ask__phone">
               ${phone(ctx, 'ask-verdict', L.ask.screenAlt, { sizes: '300px' })}
             </div>
           </div>
+          <p class="footnote">${esc(L.ask.footnote)}</p>
         </div>
       </section>`;
 
-  const art = [weekStrip(), miniWheel(), ring(78)];
+  /* Three layers, each topped by a live copy of its app component */
+  const [today, chart, deeper] = L.layers.items;
+  const layerDemos = [
+    `<div class="guidance">
+                <p class="micro">${esc(today.demo.label)}</p>
+                <p class="guidance__text">${esc(today.demo.text)}</p>
+                <p class="guidance__src">${esc(today.demo.sourcePrefix)} <em>${esc(today.demo.source)}</em></p>
+              </div>
+              ${weekStrip(today.demo.weekLegend)}
+              <div class="plate transit"><span class="transit__bar"></span><span class="transit__info"><b>${esc(today.demo.transit.title)}</b><i>${esc(today.demo.transit.text)}</i></span><span class="badge">${esc(today.demo.transit.badge)}</span></div>`,
+    `<div class="plate pcard">
+                <div class="pcard__head">${SUN}<span class="pcard__label">${esc(chart.demo.label)}</span><span class="pcard__house">${esc(chart.demo.house)}</span></div>
+                <p class="pcard__name">${esc(chart.demo.title)}</p>
+                <p class="pcard__body">${esc(chart.demo.text)}</p>
+              </div>`,
+    `<div class="mcards">${deeper.demo.matches
+      .map(
+        (m) => `<div class="plate mcard"><span class="mcard__left"><b>${esc(m.title)}</b><i>${esc(m.details)}</i></span><span class="mcard__right"><b>${m.score}%</b><i>${esc(deeper.demo.scoreLabel)}</i></span>${CHEV}</div>`
+      )
+      .join('')}</div>`,
+  ];
   const layers = `
       <section class="section" id="inside" aria-labelledby="inside-title">
         <div class="wrap">
           <div class="section__head">
-            <p class="eyebrow">${esc(L.layers.eyebrow)}</p>
+            <p class="micro">${esc(L.layers.eyebrow)}</p>
             <h2 id="inside-title" class="h2">${esc(L.layers.title)}</h2>
             <p class="lead">${esc(L.layers.lead)}</p>
           </div>
@@ -74,10 +125,12 @@ export function homePage(ctx) {
             ${L.layers.items
               .map(
                 (it, i) => `<li class="card layer">
-              <div class="layer__art" aria-hidden="true">${art[i]}</div>
-              <p class="label">${esc(it.label)}</p>
+              <div class="layer__demo" aria-hidden="true">
+              ${layerDemos[i]}
+              </div>
+              <p class="micro micro--muted">${esc(it.label)}</p>
               <h3 class="h3">${esc(it.title)}</h3>
-              <p>${esc(it.text)}</p>
+              <p class="layer__text">${esc(it.text)}</p>
               <ul class="tags">${it.tags.map((g) => `<li>${esc(g)}</li>`).join('')}</ul>
             </li>`
               )
@@ -86,23 +139,35 @@ export function homePage(ctx) {
         </div>
       </section>`;
 
+  /* Compatibility: text on one side, the report built from app components on the other */
+  const C = L.compatibility.demo;
   const compat = `
       <section class="section" id="compatibility" aria-labelledby="compat-title">
-        <div class="wrap">
-          <div class="panel panel--split panel--reverse">
-            <div class="panel__copy">
-              <p class="eyebrow">${esc(L.compatibility.eyebrow)}</p>
-              <h2 id="compat-title" class="h2">${esc(L.compatibility.title)}</h2>
-              <p class="lead">${esc(L.compatibility.lead)}</p>
-              <ul class="points">
-                ${L.compatibility.points
-                  .map((p) => `<li>${STAR}<div><h3 class="point__title">${esc(p.title)}</h3><p>${esc(p.text)}</p></div></li>`)
-                  .join('\n                ')}
-              </ul>
+        <div class="wrap compat">
+          <div class="compat__copy">
+            <p class="micro">${esc(L.compatibility.eyebrow)}</p>
+            <h2 id="compat-title" class="h2">${esc(L.compatibility.title)}</h2>
+            <p class="lead">${esc(L.compatibility.lead)}</p>
+            <ul class="points">
+              ${L.compatibility.points
+                .map((p) => `<li>${SPARK}<div><h3 class="point__title">${esc(p.title)}</h3><p>${esc(p.text)}</p></div></li>`)
+                .join('\n              ')}
+            </ul>
+          </div>
+          <div class="card report" aria-hidden="true">
+            <div class="report__score">
+              <div class="ring w-${C.score}"><div class="ring__inner"><b>${C.score}%</b><i>${esc(C.scoreLabel)}</i></div></div>
+              <p class="report__headline">${esc(C.headline)}</p>
+              <p class="report__summary">${esc(C.summary)}</p>
             </div>
-            <div class="panel__media">
-              ${phone(ctx, 'compatibility', L.compatibility.screenAlt, { sizes: '300px' })}
-            </div>
+            <p class="micro">${esc(C.partnerLabel)}</p>
+            <div class="plate partner"><span><b>${esc(C.partnerName)}</b><i>${esc(C.partnerDetails)}</i></span><span class="partner__link">${esc(C.partnerLink)} →</span></div>
+            <p class="micro">${esc(C.areasLabel)}</p>
+            <div class="areas">${C.areas.map((a) => `<span class="area">${esc(a)}</span>`).join('')}</div>
+            <p class="micro">${esc(C.dimsLabel)}</p>
+            <div class="dims">${C.dims
+              .map((d) => `<div class="plate dim">${icon(d.key, 18)}<b>${esc(d.title)}</b><span class="bar"><span class="w-${d.pct}"></span></span><i>${d.pct}%</i></div>`)
+              .join('')}</div>
           </div>
         </div>
       </section>`;
@@ -111,14 +176,14 @@ export function homePage(ctx) {
       <section class="section" id="faq" aria-labelledby="faq-title">
         <div class="wrap wrap--narrow">
           <div class="section__head">
-            <p class="eyebrow">${esc(L.faq.eyebrow)}</p>
+            <p class="micro">${esc(L.faq.eyebrow)}</p>
             <h2 id="faq-title" class="h2">${esc(L.faq.title)}</h2>
           </div>
-          <div class="faq">
+          <div class="card faq">
             ${L.faq.items
               .map(
                 (f) => `<details class="faq__item">
-              <summary><span>${esc(f.q)}</span></summary>
+              <summary><span>${esc(f.q)}</span>${CHEV}</summary>
               <div class="faq__a prose">${md.block(f.a)}</div>
             </details>`
               )
@@ -132,6 +197,7 @@ export function homePage(ctx) {
       <section class="section closing" aria-labelledby="closing-title">
         <div class="wrap">
           <div class="closing__inner">
+            ${SPARK}
             <h2 id="closing-title" class="h2">${esc(L.closing.title)}</h2>
             <p class="lead">${esc(L.closing.text)}</p>
             ${storeButtons(ctx)}
@@ -171,54 +237,29 @@ function jsonLd(ctx) {
   return JSON.stringify(data).replace(/</g, '\\u003c');
 }
 
-/* Small decorative illustrations for the three layers (aria-hidden). */
-function weekStrip() {
+function weekStrip(legend) {
   const days = [
-    ['26', 'TUE', 'good'],
-    ['27', 'WED', 'neutral'],
-    ['28', 'THU', 'today'],
-    ['29', 'FRI', 'good'],
-    ['30', 'SAT', 'caution'],
-    ['31', 'SUN', 'neutral'],
-    ['01', 'MON', 'good'],
+    ['26', 'Tue', 'fav'],
+    ['27', 'Wed', 'neu'],
+    ['28', 'Thu', 'today'],
+    ['29', 'Fri', 'fav'],
+    ['30', 'Sat', 'cau'],
+    ['31', 'Sun', 'neu'],
+    ['01', 'Mon', 'fav'],
   ];
-  return `<div class="week">${days
-    .map(([d, w, s]) => `<span class="week__day is-${s}"><b>${d}</b><i>${w}</i></span>`)
-    .join('')}</div>`;
+  return `<div class="week">${days.map(([n, d, s]) => `<span class="day is-${s}"><b>${n}</b><i>${d}</i></span>`).join('')}</div>
+              <p class="legend"><span><i class="dot dot--fav"></i>${esc(legend[0])}</span><span><i class="dot dot--neu"></i>${esc(legend[1])}</span><span><i class="dot dot--cau"></i>${esc(legend[2])}</span></p>`;
 }
 
-function miniWheel() {
-  const ticks = Array.from({ length: 12 }, (_, i) => {
-    const a = (i * Math.PI) / 6;
-    const x1 = 60 + Math.cos(a) * 44, y1 = 60 + Math.sin(a) * 44;
-    const x2 = 60 + Math.cos(a) * 54, y2 = 60 + Math.sin(a) * 54;
-    return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
-  }).join('');
-  return `<svg class="wheel" viewBox="0 0 120 120" focusable="false">
-    <circle cx="60" cy="60" r="54" class="wheel__ring"/><circle cx="60" cy="60" r="44" class="wheel__ring"/>
-    <g class="wheel__ticks">${ticks}</g>
-    <line x1="6" y1="60" x2="114" y2="60" class="wheel__axis"/><line x1="60" y1="6" x2="60" y2="114" class="wheel__axis"/>
-    <path d="M35 44 L78 34 L86 74 L44 80 Z" class="wheel__aspects"/>
-    <circle cx="35" cy="44" r="3" class="p1"/><circle cx="78" cy="34" r="3" class="p2"/><circle cx="86" cy="74" r="3" class="p3"/><circle cx="44" cy="80" r="3" class="p4"/>
-  </svg>`;
+function castWheel() {
+  return `<svg class="cast__wheel" viewBox="0 0 48 48" focusable="false"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="24" cy="4" r="1.6" fill="currentColor"/><circle cx="44" cy="24" r="1.6" fill="currentColor"/><circle cx="24" cy="44" r="1.6" fill="currentColor"/><circle cx="4" cy="24" r="1.6" fill="currentColor"/></svg>`;
 }
 
-function ring(pct) {
-  const c = 2 * Math.PI * 40;
-  return `<svg class="ring" viewBox="0 0 100 100" focusable="false">
-    <circle cx="50" cy="50" r="40" class="ring__track"/>
-    <circle cx="50" cy="50" r="40" class="ring__value" stroke-dasharray="${((c * pct) / 100).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 50 50)"/>
-    <text x="50" y="52" class="ring__num">${pct}%</text><text x="50" y="66" class="ring__cap">match</text>
-  </svg>`;
-}
-
-/* ---------------- Legal (Privacy, Terms) ---------------- */
+/* ---------- Legal (Privacy, Terms) ---------- */
 
 export function legalPage(ctx, doc) {
   const { t } = ctx;
-  const toc = doc.headings
-    .map((h) => `<li><a href="#${attr(h.id)}">${h.html}</a></li>`)
-    .join('');
+  const toc = doc.headings.map((h) => `<li><a href="#${attr(h.id)}">${h.html}</a></li>`).join('');
   return {
     key: doc.key,
     path: `/${doc.key}`,
@@ -227,9 +268,9 @@ export function legalPage(ctx, doc) {
     bodyClass: 'page-legal',
     body: `
       <div class="wrap legal">
-        <p class="eyebrow legal__meta">${esc(t.ui.documentLabel)} · <time datetime="${attr(doc.updatedISO)}">${esc(t.ui.updated)} ${esc(doc.updatedShort)}</time></p>
-        <details class="toc">
-          <summary>${esc(t.ui.contents)}</summary>
+        <p class="legal__meta"><span class="micro">${esc(t.ui.documentLabel)}</span><time class="pill" datetime="${attr(doc.updatedISO)}">${esc(t.ui.updated)} ${esc(doc.updatedShort)}</time></p>
+        <details class="card toc">
+          <summary><span class="micro">${esc(t.ui.contents)}</span>${CHEV}</summary>
           <ol>${toc}</ol>
         </details>
         <article class="prose prose--legal" data-legal-doc="${attr(doc.key)}">
@@ -240,7 +281,7 @@ ${doc.html}
   };
 }
 
-/* ---------------- Support ---------------- */
+/* ---------- Support ---------- */
 
 export function supportPage(ctx) {
   const { t, cfg, md, assets } = ctx;
@@ -254,12 +295,12 @@ export function supportPage(ctx) {
     scripts: `<script src="/${assets.js}" defer></script>`,
     body: `
       <div class="wrap wrap--narrow support">
-        <p class="eyebrow">${esc(S.eyebrow)}</p>
+        <p class="micro">${esc(S.eyebrow)}</p>
         <h1 class="h1">${esc(S.title)}</h1>
         <p class="lead">${esc(S.lead)}</p>
 
         <div class="card contact" data-copy-root>
-          <p class="label">${esc(S.emailLabel)}</p>
+          <div class="contact__head">${icon('mail', 22)}<p class="micro micro--muted">${esc(S.emailLabel)}</p></div>
           <p class="contact__email"><span id="support-email" data-copy-source>${esc(cfg.email)}</span></p>
           <div class="contact__actions">
             <button type="button" class="btn btn--primary" data-copy-button data-copied="${attr(S.copied)}" data-failed="${attr(S.copyFailed)}">${esc(S.copy)}</button>
@@ -269,14 +310,16 @@ export function supportPage(ctx) {
         </div>
 
         <h2 class="h2 support__faq-title">${esc(S.faqTitle)}</h2>
-        <ul class="support__toc">
-          ${S.items.map((f) => `<li><a href="#${attr(f.id)}">${esc(f.q)}</a></li>`).join('\n          ')}
+        <ul class="card settings">
+          ${S.items
+            .map((f) => `<li><a class="settings__row" href="#${attr(f.id)}"><span class="settings__icon">${icon(f.icon, 18)}</span><span class="settings__label">${esc(f.q)}</span>${CHEV}</a></li>`)
+            .join('\n          ')}
         </ul>
         <div class="support__list">
           ${S.items
             .map(
               (f) => `<section class="card qa" id="${attr(f.id)}" aria-labelledby="${attr(f.id)}-q">
-            <h3 class="h3" id="${attr(f.id)}-q">${esc(f.q)}</h3>
+            <div class="qa__head"><span class="settings__icon">${icon(f.icon, 18)}</span><h3 class="h3" id="${attr(f.id)}-q">${esc(f.q)}</h3></div>
             <div class="prose">${md.block(f.a)}</div>
           </section>`
             )
@@ -287,7 +330,7 @@ export function supportPage(ctx) {
   };
 }
 
-/* ---------------- 404 ---------------- */
+/* ---------- 404 ---------- */
 
 export function notFoundPage(ctx) {
   const { t, url } = ctx;
@@ -301,7 +344,7 @@ export function notFoundPage(ctx) {
     bodyClass: 'page-404',
     body: `
       <div class="wrap notfound">
-        <p class="notfound__code" aria-hidden="true">${esc(N.code)}</p>
+        <div class="notfound__void" aria-hidden="true"><span>${esc(N.code)}</span></div>
         <h1 class="h1">${esc(N.title)}</h1>
         <p class="lead">${esc(N.text)}</p>
         <p class="notfound__actions">

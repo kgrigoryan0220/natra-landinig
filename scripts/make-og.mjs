@@ -17,18 +17,19 @@ const shot = async (slot) => {
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face{font-family:C;src:url(${u('src/fonts/cormorant-garamond-latin-wght-normal.woff2')});font-weight:300 700}
+@font-face{font-family:C;font-style:italic;src:url(${u('src/fonts/cormorant-garamond-latin-wght-italic.woff2')});font-weight:300 700}
 @font-face{font-family:S;src:url(${u('src/fonts/dm-sans-latin-wght-normal.woff2')});font-weight:100 1000}
 @font-face{font-family:M;src:url(${u('src/fonts/dm-mono-latin-400-normal.woff2')})}
 *{box-sizing:border-box}html,body{margin:0}
 body{width:1200px;height:630px;overflow:hidden;position:relative;color:#F1EFF8;font-family:S;
-background:radial-gradient(700px 420px at 92% -10%,rgba(110,86,255,.42),transparent 70%),radial-gradient(500px 360px at -5% 110%,rgba(155,143,255,.14),transparent 70%),#0B0B10}
+background:radial-gradient(700px 420px at 92% -10%,rgba(94,62,243,.42),transparent 70%),radial-gradient(500px 360px at -5% 110%,rgba(94,62,243,.16),transparent 70%),#0A0A0F}
 .stars{position:absolute;inset:0}
 .copy{position:absolute;left:84px;top:96px;width:560px}
-.eyebrow{font:500 15px M;letter-spacing:.24em;color:#9B8FFF;text-transform:uppercase;margin:0 0 26px}
-h1{font:500 150px/0.9 C;margin:0 0 24px;letter-spacing:-.02em}
-p.promise{font:400 44px/1.12 C;color:#9B8FFF;margin:0 0 30px}
-p.sub{font:400 21px/1.5 S;color:#B9B5CC;margin:0}
-.phone{position:absolute;padding:9px;border-radius:44px/44px;background:linear-gradient(160deg,#2a2933,#0e0d12 40%,#15141b);box-shadow:inset 0 0 0 1.5px #4a4954,0 30px 80px -20px #000,0 0 90px -20px rgba(110,86,255,.55)}
+.eyebrow{font:500 15px S;letter-spacing:.14em;color:#9B8FFF;text-transform:uppercase;margin:0 0 26px}
+h1{font:600 150px/0.9 C;margin:0 0 24px;letter-spacing:-.02em}
+p.promise{font:italic 300 46px/1.15 C;color:#F0EEF8;margin:0 0 30px}
+p.sub{font:400 21px/1.5 S;color:#8B89A0;margin:0}
+.phone{position:absolute;padding:9px;border-radius:44px/44px;background:#0c0c12;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 0 0 3px rgba(155,143,255,.08),0 30px 80px -20px #000,0 0 120px -20px rgba(94,62,243,.5)}
 .phone div{position:relative;overflow:hidden;border-radius:36px}
 .phone div::after{content:'';position:absolute;left:33.9%;top:1.3%;width:32.2%;height:4.4%;border-radius:99px;background:#000}
 .phone img{display:block;width:100%}

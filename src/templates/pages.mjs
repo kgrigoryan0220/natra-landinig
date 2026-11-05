@@ -25,7 +25,7 @@ const ICONS = {
 const icon = (name, size) => svg(ICONS[name] || '', size);
 const SPARK = `<svg class="spark" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 0c.5 4.2 3.8 7.5 8 8-4.2.5-7.5 3.8-8 8-.5-4.2-3.8-7.5-8-8 4.2-.5 7.5-3.8 8-8Z"/></svg>`;
 const SUN = `<svg class="pc-sym" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg>`;
-const CHEV = `<span class="chev" aria-hidden="true">›</span>`;
+const CHEV = `<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg>`;
 
 /* ---------- Landing ---------- */
 
@@ -179,12 +179,12 @@ export function homePage(ctx) {
             <p class="micro">${esc(L.faq.eyebrow)}</p>
             <h2 id="faq-title" class="h2">${esc(L.faq.title)}</h2>
           </div>
-          <div class="card faq">
+          <div class="acc" data-accordion>
             ${L.faq.items
               .map(
-                (f) => `<details class="faq__item">
-              <summary><span>${esc(f.q)}</span>${CHEV}</summary>
-              <div class="faq__a prose">${md.block(f.a)}</div>
+                (f) => `<details class="acc__item">
+              <summary class="acc__q"><span class="acc__label">${esc(f.q)}</span>${CHEV}</summary>
+              <div class="acc__panel"><div class="acc__inner prose">${md.block(f.a)}</div></div>
             </details>`
               )
               .join('\n            ')}
@@ -284,7 +284,7 @@ ${doc.html}
 /* ---------- Support ---------- */
 
 export function supportPage(ctx) {
-  const { t, cfg, md, assets } = ctx;
+  const { t, cfg, md } = ctx;
   const S = t.support;
   return {
     key: 'support',
@@ -292,7 +292,6 @@ export function supportPage(ctx) {
     title: S.meta.title,
     description: S.meta.description,
     bodyClass: 'page-support',
-    scripts: `<script src="/${assets.js}" defer></script>`,
     body: `
       <div class="wrap wrap--narrow support">
         <p class="micro">${esc(S.eyebrow)}</p>
@@ -310,18 +309,13 @@ export function supportPage(ctx) {
         </div>
 
         <h2 class="h2 support__faq-title">${esc(S.faqTitle)}</h2>
-        <ul class="card settings">
-          ${S.items
-            .map((f) => `<li><a class="settings__row" href="#${attr(f.id)}"><span class="settings__icon">${icon(f.icon, 18)}</span><span class="settings__label">${esc(f.q)}</span>${CHEV}</a></li>`)
-            .join('\n          ')}
-        </ul>
-        <div class="support__list">
+        <div class="acc acc--icons" data-accordion>
           ${S.items
             .map(
-              (f) => `<section class="card qa" id="${attr(f.id)}" aria-labelledby="${attr(f.id)}-q">
-            <div class="qa__head"><span class="settings__icon">${icon(f.icon, 18)}</span><h3 class="h3" id="${attr(f.id)}-q">${esc(f.q)}</h3></div>
-            <div class="prose">${md.block(f.a)}</div>
-          </section>`
+              (f) => `<details class="acc__item" id="${attr(f.id)}">
+            <summary class="acc__q"><span class="acc__icon">${icon(f.icon, 18)}</span><span class="acc__label">${esc(f.q)}</span>${CHEV}</summary>
+            <div class="acc__panel"><div class="acc__inner prose">${md.block(f.a)}</div></div>
+          </details>`
             )
             .join('\n          ')}
         </div>

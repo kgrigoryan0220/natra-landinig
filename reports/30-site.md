@@ -256,3 +256,18 @@ Lighthouse 12.8.2, headless Chromium, сайт отдавался через `np
 - Compatibility: «78% match — Strong Connection — A rare share of values with real, workable friction to grow through.» Their info: «Alex · Sagittarius · Dec 14, 1996 · New York · View chart →». Areas: Emotional depth, Shared humor, Creative synergy, Mutual ambition. Dimensions: Emotional connection 85%, Love & romance 61%, Communication 72%, Shared future 66%.
 
 Прежние тексты лендинга выше не менялись, кроме строк данных под шагами «Ask the chart»: их заменили компоненты.
+
+## Правки после просмотра (v2.1)
+
+- **FAQ на главной и в Support — одна и та же гармошка.**
+  - Вопрос раскрывается и закрывается плавно: анимация высоты и прозрачности 0,32 с, шеврон поворачивается.
+  - Открыт только один вопрос: при открытии другого предыдущий плавно закрывается.
+  - При `prefers-reduced-motion` анимации нет.
+  - Без JavaScript работает обычный `<details>`.
+- **Support без якорей.** Список-оглавление и отдельные карточки ответов заменены одной гармошкой с иконками. Прямые ссылки сохранены: `/support#delete-account` открывает нужный вопрос и прокручивает к нему. Это адрес для поля «Delete account URL» в Google Play.
+- **Любая страница открывается сверху.**
+  - Браузер больше не восстанавливает позицию прокрутки (`history.scrollRestoration = 'manual'`).
+  - Это касается перехода по ссылке, «Назад» и «Вперёд», перезагрузки и страниц из кеша браузера (bfcache).
+  - Исключение — ссылка с якорем на конкретное место.
+- **Скрипт.** `site.js` теперь подключается на всех страницах. Он по-прежнему один, свой, без сторонних запросов и весит около 2 КБ в gzip.
+- **Lighthouse после правок:** главная на телефоне 98 / 100 / 100 / 100, Support — 100 / 100 / 100 / 100.

@@ -993,7 +993,8 @@ a.store:hover {
 }
 .chev {
   flex: none;
-  font: 300 20px/1 var(--body);
+  width: 18px;
+  height: 18px;
   color: var(--text-2);
 }
 
@@ -1162,46 +1163,77 @@ a.store:hover {
   color: var(--text-2);
 }
 
-/* ---------- FAQ (app accordion) ---------- */
+/* ---------- Accordion (app FAQ): landing FAQ and Support ---------- */
 
-.faq {
-  padding: 0 22px;
+.acc {
+  padding: 0 20px;
+  border: 1px solid var(--line);
   border-radius: var(--r);
   background: var(--bg-2);
-  box-shadow: none;
 }
-.faq__item {
-  border-bottom: 1px solid var(--divider);
+.acc__item + .acc__item {
+  border-top: 1px solid var(--divider);
 }
-.faq__item:last-child {
-  border-bottom: 0;
+.acc__item {
+  scroll-margin-top: 16px;
 }
-.faq__item summary {
+.acc__q {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 18px 0;
-  font-weight: 500;
-  font-size: 16px;
+  gap: 14px;
+  padding: 16px 0;
   cursor: pointer;
   list-style: none;
+  border-radius: 10px;
 }
-.faq__item summary::-webkit-details-marker {
+.acc__q::-webkit-details-marker {
   display: none;
 }
-.faq__item .chev,
-.toc .chev {
-  transition: transform 0.2s ease, color 0.2s ease;
+.acc__q:focus-visible {
+  outline-offset: 2px;
 }
-.faq__item[open] .chev,
-.toc[open] .chev {
+.acc__label {
+  flex: 1;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+  transition: color 0.2s ease;
+}
+.acc__q:hover .acc__label {
+  color: #fff;
+}
+.acc__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg-3);
+  color: var(--accent);
+}
+.acc__item .chev {
+  transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.2s ease;
+}
+.acc__item.is-open .chev,
+html:not(.js) .acc__item[open] .chev {
   transform: rotate(90deg);
   color: var(--accent);
 }
-.faq__a {
+.acc__panel {
+  overflow: hidden;
+}
+.acc__inner {
   padding: 0 0 18px;
   font-size: 15px;
+}
+.acc--icons .acc__inner {
+  padding-left: 50px;
+}
+@media (max-width: 479px) {
+  .acc--icons .acc__inner {
+    padding-left: 0;
+  }
 }
 .more {
   margin: 24px 0 0;
@@ -1431,6 +1463,13 @@ a.store:hover {
 .toc summary .micro {
   margin: 0;
 }
+.toc .chev {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.toc[open] .chev {
+  transform: rotate(90deg);
+  color: var(--accent);
+}
 .toc ol {
   margin: 0;
   padding: 0 18px 16px 40px;
@@ -1501,66 +1540,6 @@ a.store:hover {
 }
 .support__faq-title {
   margin-bottom: 16px;
-}
-.settings {
-  list-style: none;
-  margin: 0 0 28px;
-  padding: 0 18px;
-  border-radius: var(--r);
-  background: var(--bg-2);
-  box-shadow: none;
-}
-.settings li + li {
-  border-top: 1px solid var(--divider);
-}
-.settings__row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 0;
-  color: var(--text);
-  text-decoration: none;
-}
-.settings__row:hover {
-  color: var(--text);
-}
-.settings__row:hover .chev {
-  color: var(--accent);
-}
-.settings__icon {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--bg-3);
-  color: var(--accent);
-}
-.settings__label {
-  flex: 1;
-  font-size: 15px;
-}
-.support__list {
-  display: grid;
-  gap: 12px;
-}
-.qa {
-  padding: 22px;
-  border-radius: var(--r);
-  background: var(--bg-2);
-  box-shadow: none;
-  scroll-margin-top: 16px;
-}
-.qa__head {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 12px;
-}
-.qa .h3 {
-  margin: 0;
-  font-size: 22px;
 }
 .support__disclaimer {
   margin-top: 32px;
@@ -1650,7 +1629,9 @@ a.store:hover {
     animation: none;
   }
   .btn,
-  .chev {
+  .chev,
+  .acc__item .chev,
+  .acc__label {
     transition: none;
   }
 }

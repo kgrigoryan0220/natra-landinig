@@ -2,7 +2,7 @@
 import { esc, attr } from '../../scripts/lib/html.mjs';
 
 export function layout(ctx, page) {
-  const { t, cfg, assets, locale, url } = ctx;
+  const { t, cfg, assets, url } = ctx;
   const canonical = url(page.path, { absolute: true });
   const ogImage = `${cfg.SITE_URL}/${assets.og.file}`;
   const alternates =
@@ -56,7 +56,7 @@ export function layout(ctx, page) {
 ${page.body}
     </main>
     ${footer(ctx)}
-    ${page.scripts || ''}
+    <script src="/${assets.js}" defer></script>
   </body>
 </html>
 `;

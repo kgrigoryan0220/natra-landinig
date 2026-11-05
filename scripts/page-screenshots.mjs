@@ -25,6 +25,13 @@ for (const [vname, width, height] of VIEWPORTS) {
     await page.evaluate(async () => {
       for (const img of document.querySelectorAll('img[loading="lazy"]')) img.loading = 'eager';
       await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => (i.onload = i.onerror = r)))));
+      // Scroll through the page so every image is decoded before the full-page capture.
+      for (let y = 0; y < document.body.scrollHeight; y += 600) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 60));
+      }
+      await Promise.all([...document.images].map((i) => i.decode().catch(() => {})));
+      window.scrollTo(0, 0);
     });
     const file = path.join(OUT, `${name}-${vname}.png`);
     await page.screenshot({ path: file, fullPage: true });

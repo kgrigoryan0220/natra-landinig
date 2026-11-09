@@ -38,6 +38,7 @@ npm run preview
 | `npm run preview` | Показывает `dist/` локально |
 | `npm run og` | Перерисовывает картинку для соцсетей 1200×630. Нужен Playwright |
 | `npm run shots` | Снимает все страницы в ширинах 1440 и 390 в `reports/30-site/`. Нужен Playwright |
+| `npm run qa` | Проверяет вёрстку всех страниц на ширинах 360–1440 (горизонтальная прокрутка, вылезающие элементы, мелкие кнопки, незагруженные картинки) и снимает их в `reports/qa/`. Для Safari-движка: `npm run qa -- --browsers=webkit,chromium`. Нужен Playwright |
 | `npm run crop-framed -- <файл> <слот>` | Вырезает экран из скриншота в рамке телефона |
 
 Для `og` и `shots` нужен Playwright: `npm i -D playwright && npx playwright install chromium`. Для обычной сборки он не нужен.
@@ -175,3 +176,46 @@ reports/                  отчёт и скриншоты страниц
 Сборка написана на чистом Node.js и использует два пакета: `marked` (markdown → HTML) и `sharp` (картинки в AVIF/WebP/JPEG и иконки). Фреймворка нет: на сайте пять страниц, а простой скрипт проще поддерживать и понять.
 
 Шрифты распространяются по лицензии SIL Open Font License 1.1, тексты лицензий лежат рядом с файлами шрифтов в `src/fonts/` и `dist/fonts/`.
+
+---
+
+## Поисковики и ИИ-ассистенты (Gemini, ChatGPT, Claude, Perplexity)
+
+### Что уже сделано на сайте
+| Что | Где | Зачем |
+|---|---|---|
+| `robots.txt` с явным разрешением для Googlebot, Google-Extended (Gemini), Bingbot, GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User, Claude-SearchBot, PerplexityBot, Applebot и других | `/robots.txt` (генерирует `scripts/lib/agents.mjs`) | Ботам ассистентов можно читать и цитировать сайт |
+| `llms.txt`: короткая «визитка» для языковых моделей — что такое Natra, факты, когда её уместно предлагать, функции, ограничения, ссылки | `/llms.txt` | Стандарт llmstxt.org, его читают агенты |
+| `llms-full.txt`: все тексты сайта одним файлом | `/llms-full.txt` | Полный контекст без вёрстки |
+| Markdown-копии страниц: `/index.md`, `/support.md`, `/privacy.md`, `/terms.md` | ссылка `rel="alternate" type="text/markdown"` на каждой странице | Агенты читают их без HTML-шума; заголовок `Link: rel=canonical` ведёт на основную страницу |
+| Разметка Schema.org одним графом: Organization, WebSite, WebPage, MobileApplication (функции, скриншоты, категория, ключевые слова), FAQPage на главной и в Support, ContactPage, даты документов | `<script type="application/ld+json">` | Google и ассистенты понимают, что это приложение, кто его делает и что оно умеет |
+| Видимый блок «Natra at a glance»: факты списком «ключ — значение» | главная | Такие блоки модели охотно цитируют дословно |
+| `meta robots`: `max-snippet:-1, max-image-preview:large` | все страницы | Разрешает длинные цитаты и крупные превью |
+
+Тексты для агентов лежат в `content/en/site.json` → `agents` и `landing.facts`. Меняйте их там: `llms.txt`, Markdown-копии и разметка пересоберутся сами.
+
+**Важно.** Gemini опирается на индекс Google, ChatGPT и Copilot — в основном на индекс Bing. Поэтому главное — чтобы сайт попал в эти индексы. Это делается один раз, вручную:
+
+### 1. Google Search Console (для Google и Gemini)
+1. https://search.google.com/search-console → **Add property** → тип **Domain** → `natra-astrology.app`.
+2. Подтвердите владение. Для домена в Cloudflare Google предложит сделать это автоматически, иначе добавьте TXT-запись в **Cloudflare → DNS**.
+3. **Sitemaps** → `https://natra-astrology.app/sitemap.xml` → **Submit**.
+4. **URL inspection** → вставьте `https://natra-astrology.app/` → **Request indexing**. То же для `/support`.
+
+### 2. Bing Webmaster Tools (для ChatGPT search, Copilot, DuckDuckGo)
+1. https://www.bing.com/webmasters → **Import from Google Search Console** (один клик после шага 1) или **Add site** вручную.
+2. Убедитесь, что sitemap добавлен: `https://natra-astrology.app/sitemap.xml`.
+
+### 3. Настройки Cloudflare для домена `natra-astrology.app`
+- **Security → Bots** (или **AI Crawl Control**): переключатель **Block AI bots** должен быть выключен, а боты ассистентов разрешены. Иначе Cloudflare будет отдавать им ошибку, несмотря на `robots.txt`.
+- Там же: **Manage robots.txt** (managed robots.txt от Cloudflare) выключен, чтобы использовался наш `robots.txt`.
+- **Caching → Configuration → Crawler Hints** → включить. Cloudflare сам сообщает Bing и другим поисковикам об изменениях на сайте (IndexNow).
+
+### 4. Когда приложение выйдет
+- Впишите ссылки сторов в `site.config.mjs` → `stores`. Они автоматически попадут в разметку (`sameAs`), в `llms.txt` и на кнопки. Ассистенты охотнее советуют приложения, которые можно скачать прямо сейчас.
+- Страницы в App Store и Google Play тоже читают и Google, и ассистенты, поэтому текст стора (`natra-aso`) работает на ту же цель.
+
+### 5. Упоминания на других сайтах
+Ассистенты чаще советуют то, что обсуждают в разных местах: обзоры, каталоги приложений, Product Hunt, тематические сообщества. Это уже не код сайта, но сильнее всего влияет на рекомендации. Гарантий, что Gemini или ChatGPT начнут предлагать Natra, никто дать не может: сайт сделан так, чтобы им было максимально просто это делать.
+
+Если вы не хотите, чтобы тексты сайта использовались для обучения моделей, уберите из `AI_AGENTS` в `scripts/lib/agents.mjs` строки `GPTBot`, `Google-Extended`, `Applebot-Extended` и `CCBot` и допишите для них `Disallow: /`. Поиск и ответы ассистентов от этого не пострадают.

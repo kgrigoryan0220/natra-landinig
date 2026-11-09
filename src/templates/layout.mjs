@@ -17,13 +17,15 @@ export function layout(ctx, page) {
 <html lang="${attr(t.lang)}">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>${esc(page.title)}</title>
     <meta name="description" content="${attr(page.description)}">
-    ${page.noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${attr(canonical)}">`}
+    ${page.noindex ? '<meta name="robots" content="noindex">' : `<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="${attr(canonical)}">${page.markdown ? `
+    <link rel="alternate" type="text/markdown" href="${attr(page.markdown)}">` : ''}`}
     ${alternates}
     <meta name="apple-itunes-app" content="app-id=${attr(cfg.appleAppId)}">
-    <meta name="theme-color" content="#0B0B10">
+    <meta name="theme-color" content="#0A0A0F">
     <meta name="color-scheme" content="dark">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Natra">
@@ -66,6 +68,15 @@ function header(ctx, page) {
   const { t, url, assets } = ctx;
   const onHome = page.key === 'home';
   const anchor = (id) => (onHome ? `#${id}` : `${url('/')}#${id}`);
+  const links = [
+    [anchor('ask'), t.ui.nav.ask, false],
+    [anchor('inside'), t.ui.nav.layers, false],
+    [anchor('compatibility'), t.ui.nav.compatibility, false],
+    [anchor('faq'), t.ui.nav.faq, false],
+    [url('/support'), t.ui.nav.support, page.key === 'support'],
+  ];
+  const link = ([href, label, current], cls = '') =>
+    `<a${cls ? ` class="${cls}"` : ''} href="${attr(href)}"${current ? ' aria-current="page"' : ''}>${esc(label)}</a>`;
   return `<header class="site-header">
       <div class="wrap site-header__inner">
         <a class="brand" href="${attr(url('/'))}" aria-label="${attr(t.ui.homeLabel)}">
@@ -73,11 +84,14 @@ function header(ctx, page) {
           <span class="brand__name">Natra</span>
         </a>
         <nav class="site-nav" aria-label="${attr(t.ui.nav.label)}">
-          <a class="site-nav__secondary" href="${attr(anchor('ask'))}">${esc(t.ui.nav.ask)}</a>
-          <a class="site-nav__secondary" href="${attr(anchor('inside'))}">${esc(t.ui.nav.layers)}</a>
-          <a class="site-nav__secondary" href="${attr(anchor('compatibility'))}">${esc(t.ui.nav.compatibility)}</a>
-          <a href="${attr(url('/support'))}"${page.key === 'support' ? ' aria-current="page"' : ''}>${esc(t.ui.nav.support)}</a>
+          ${links.filter((l, i) => i !== 3).map((l) => link(l)).join('\n          ')}
         </nav>
+        <details class="menu" data-menu>
+          <summary class="menu__btn" aria-label="${attr(t.ui.menu)}"><span class="acc__row"><svg class="menu__ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="menu__l1" d="M4 8h16"/><path class="menu__l2" d="M4 16h16"/></svg></span></summary>
+          <nav class="menu__panel" aria-label="${attr(t.ui.nav.label)}">
+            ${links.map((l) => link(l, 'menu__link')).join('\n            ')}
+          </nav>
+        </details>
       </div>
     </header>`;
 }

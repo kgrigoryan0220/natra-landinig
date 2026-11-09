@@ -122,6 +122,59 @@
     openFromHash(true);
   });
 
+  /* ---------- Mobile menu ---------- */
+  var menu = document.querySelector('[data-menu]');
+  if (menu) {
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('a')) menu.open = false;
+    });
+    document.addEventListener('click', function (e) {
+      if (menu.open && !menu.contains(e.target)) menu.open = false;
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary').focus();
+      }
+    });
+  }
+
+  /* ---------- Carousels (phones): swipe cards with dots ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-carousel]'), function (track) {
+    var items = Array.prototype.slice.call(track.children);
+    if (items.length < 2 || !('IntersectionObserver' in window)) return;
+    var dots = document.createElement('div');
+    dots.className = 'dots';
+    dots.setAttribute('aria-hidden', 'true');
+    items.forEach(function (item, i) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.tabIndex = -1;
+      dot.className = 'dots__dot' + (i === 0 ? ' is-active' : '');
+      dot.addEventListener('click', function () {
+        track.scrollTo({ left: item.offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft || 0), behavior: reduceMotion ? 'auto' : 'smooth' });
+      });
+      dots.appendChild(dot);
+    });
+    track.parentNode.insertBefore(dots, track.nextSibling);
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var i = items.indexOf(entry.target);
+            Array.prototype.forEach.call(dots.children, function (d, k) {
+              d.classList.toggle('is-active', k === i);
+            });
+          }
+        });
+      },
+      { root: track, threshold: 0.6 }
+    );
+    items.forEach(function (item) {
+      io.observe(item);
+    });
+  });
+
   /* ---------- Support: "Copy email" ---------- */
   var copyRoot = document.querySelector('[data-copy-root]');
   if (!copyRoot) return;

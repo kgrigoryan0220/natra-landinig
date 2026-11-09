@@ -6,11 +6,13 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { Marked } from 'marked';
+import { transform as minifyCss } from 'lightningcss';
 
 import cfg from '../site.config.mjs';
 import { slugify } from './lib/html.mjs';
 import { layout } from '../src/templates/layout.mjs';
 import { homePage, legalPage, supportPage, notFoundPage } from '../src/templates/pages.mjs';
+import { robotsTxt, llmsTxt, homeMarkdown, supportMarkdown } from './lib/agents.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'src');
@@ -57,7 +59,12 @@ async function main() {
   // CSS / JS with content hash
   // Width utilities (.w-0 … .w-100) for bars and rings: the CSP forbids inline style attributes.
   const widths = Array.from({ length: 101 }, (_, i) => `.w-${i}{--w:${i}%}`).join('');
-  const css = Buffer.concat([await fs.readFile(path.join(SRC, 'styles/site.css')), Buffer.from(`\n${widths}\n`)]);
+  const rawCss = Buffer.concat([await fs.readFile(path.join(SRC, 'styles/site.css')), Buffer.from(`\n${widths}\n`)]);
+  // Minify for browsers from 2020 on (iOS/Safari 14+): keeps classic media queries and -webkit- prefixes.
+  const v = (major) => major << 16;
+  const css = Buffer.from(
+    minifyCss({ filename: 'site.css', code: rawCss, minify: true, targets: { safari: v(14), ios_saf: v(14), chrome: v(90), firefox: v(90), edge: v(90), samsung: v(14) } }).code
+  );
   assets.css = `assets/site.${hash(css)}.css`;
   await write(assets.css, css);
   const js = await fs.readFile(path.join(SRC, 'scripts/site.js'));
@@ -100,6 +107,19 @@ async function main() {
     }
     if (locale === cfg.defaultLocale) pages.push(notFoundPage(ctx));
 
+    // Markdown twins of the pages and llms.txt for AI assistants (default language only).
+    if (locale === cfg.defaultLocale) {
+      const docs = {
+        'index.md': homeMarkdown(cfg, t),
+        'support.md': supportMarkdown(cfg, t),
+      };
+      for (const key of LEGAL_DOCS) docs[`${key}.md`] = await fs.readFile(p('content', locale, 'legal', `${key}.md`), 'utf8');
+      for (const [file, text] of Object.entries(docs)) await write(file, text);
+      const summary = llmsTxt(cfg, t);
+      await write('llms.txt', summary);
+      await write('llms-full.txt', [summary, ...Object.values(docs)].join('\n\n---\n\n'));
+    }
+
     for (const page of pages) {
       const html = layout(ctx, page);
       await write(outFile(locale, page.path), html);
@@ -121,7 +141,7 @@ ${sitemap.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><
 </urlset>
 `
   );
-  await write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${cfg.SITE_URL}/sitemap.xml\n`);
+  await write('robots.txt', robotsTxt(cfg));
   await write(
     'site.webmanifest',
     JSON.stringify(
@@ -329,6 +349,27 @@ const HEADERS = `/*
 
 /fonts/*
   Cache-Control: public, max-age=2592000
+
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+
+/index.md
+  Link: <${cfg.SITE_URL}/>; rel="canonical"
+
+/support.md
+  Link: <${cfg.SITE_URL}/support>; rel="canonical"
+
+/privacy.md
+  Link: <${cfg.SITE_URL}/privacy>; rel="canonical"
+
+/terms.md
+  Link: <${cfg.SITE_URL}/terms>; rel="canonical"
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
 `;
 
 main().catch((e) => {

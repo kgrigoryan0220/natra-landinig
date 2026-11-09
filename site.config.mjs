@@ -4,7 +4,7 @@
 export default {
   // Public address of the site, without a trailing slash.
   // Replace when the domain is bought, e.g. "https://natra.app".
-  SITE_URL: 'https://example.com',
+  SITE_URL: 'https://natra-astrology.app',
 
   // Support and legal contact shown on every page.
   email: 'astrologyapp@outlook.com',

@@ -271,3 +271,18 @@ Lighthouse 12.8.2, headless Chromium, сайт отдавался через `np
   - Исключение — ссылка с якорем на конкретное место.
 - **Скрипт.** `site.js` теперь подключается на всех страницах. Он по-прежнему один, свой, без сторонних запросов и весит около 2 КБ в gzip.
 - **Lighthouse после правок:** главная на телефоне 98 / 100 / 100 / 100, Support — 100 / 100 / 100 / 100.
+
+## Выкладка (2026-11-09)
+
+- Сайт выложен на Cloudflare Pages, проект `natra-landinig`, сборка из `main`. Технический адрес: https://natra-landinig.pages.dev
+- Основной домен: **https://natra-astrology.app** (куплен в Cloudflare, подключён через Custom domains). `SITE_URL` в `site.config.mjs` указывает на него.
+
+Ссылки для сторов и приложения:
+
+| Куда | Ссылка |
+|---|---|
+| Privacy Policy (App Store Connect, Google Play, RevenueCat, приложение) | https://natra-astrology.app/privacy |
+| Terms of Use / EULA | https://natra-astrology.app/terms |
+| Support URL | https://natra-astrology.app/support |
+| Marketing URL / Website | https://natra-astrology.app/ |
+| Delete account URL (Google Play, Data safety) | https://natra-astrology.app/support#delete-account |

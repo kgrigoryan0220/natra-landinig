@@ -7,7 +7,7 @@ import path from 'node:path';
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.avif': 'image/avif', '.ico': 'image/x-icon',
-  '.woff2': 'font/woff2', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json',
+  '.woff2': 'font/woff2', '.md': 'text/markdown; charset=utf-8', '.xml': 'application/xml', '.txt': 'text/plain', '.webmanifest': 'application/manifest+json',
 };
 
 export function startServer(root, port = 0) {

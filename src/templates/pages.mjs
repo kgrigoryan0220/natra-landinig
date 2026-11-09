@@ -44,9 +44,9 @@ export function homePage(ctx) {
             ${storeButtons(ctx)}
           </div>
           <div class="hero__phones" role="group" aria-label="${attr(L.hero.phonesLabel)}">
-            ${phone(ctx, 'home', L.layers.homeAlt, { eager: true, sizes: '(min-width: 1024px) 180px, 26vw', cls: 'phone--side phone--left' })}
-            ${phone(ctx, 'chart-wheel', L.layers.chartAlt, { eager: true, priority: true, sizes: '(min-width: 1024px) 255px, 38vw', cls: 'phone--center' })}
-            ${phone(ctx, 'compatibility', L.compatibility.screenAlt, { eager: true, sizes: '(min-width: 1024px) 180px, 26vw', cls: 'phone--side phone--right' })}
+            ${phone(ctx, 'home', L.layers.homeAlt, { eager: true, sizes: '(min-width: 1024px) 180px, (min-width: 700px) 26vw, 40vw', cls: 'phone--side phone--left' })}
+            ${phone(ctx, 'chart-wheel', L.layers.chartAlt, { eager: true, priority: true, sizes: '(min-width: 1024px) 255px, (min-width: 700px) 38vw, 56vw', cls: 'phone--center' })}
+            ${phone(ctx, 'compatibility', L.compatibility.screenAlt, { eager: true, sizes: '(min-width: 1024px) 180px, (min-width: 700px) 26vw, 40vw', cls: 'phone--side phone--right' })}
           </div>
         </div>
       </section>`;
@@ -82,10 +82,10 @@ export function homePage(ctx) {
             <p class="lead">${esc(L.ask.lead)}</p>
           </div>
           <div class="ask__grid">
-            <ol class="steps">${steps}
+            <ol class="steps" data-carousel aria-label="${attr(L.ask.eyebrow)}">${steps}
             </ol>
             <div class="ask__phone">
-              ${phone(ctx, 'ask-verdict', L.ask.screenAlt, { sizes: '300px' })}
+              ${phone(ctx, 'ask-verdict', L.ask.screenAlt, { sizes: '(max-width: 699px) 225px, 300px' })}
             </div>
           </div>
           <p class="footnote">${esc(L.ask.footnote)}</p>
@@ -121,7 +121,7 @@ export function homePage(ctx) {
             <h2 id="inside-title" class="h2">${esc(L.layers.title)}</h2>
             <p class="lead">${esc(L.layers.lead)}</p>
           </div>
-          <ol class="layers">
+          <ol class="layers" data-carousel aria-label="${attr(L.layers.eyebrow)}">
             ${L.layers.items
               .map(
                 (it, i) => `<li class="card layer">
@@ -172,6 +172,20 @@ export function homePage(ctx) {
         </div>
       </section>`;
 
+  const F = L.facts;
+  const factsSec = `
+      <section class="section" id="facts" aria-labelledby="facts-title">
+        <div class="wrap wrap--narrow">
+          <div class="section__head">
+            <p class="micro">${esc(F.eyebrow)}</p>
+            <h2 id="facts-title" class="h2">${esc(F.title)}</h2>
+          </div>
+          <dl class="card facts">
+            ${F.items.map(([k, v]) => `<div class="facts__row"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('\n            ')}
+          </dl>
+        </div>
+      </section>`;
+
   const faq = `
       <section class="section" id="faq" aria-labelledby="faq-title">
         <div class="wrap wrap--narrow">
@@ -183,7 +197,7 @@ export function homePage(ctx) {
             ${L.faq.items
               .map(
                 (f) => `<details class="acc__item">
-              <summary class="acc__q"><span class="acc__label">${esc(f.q)}</span>${CHEV}</summary>
+              <summary class="acc__q"><span class="acc__row"><span class="acc__label">${esc(f.q)}</span>${CHEV}</span></summary>
               <div class="acc__panel"><div class="acc__inner prose">${md.block(f.a)}</div></div>
             </details>`
               )
@@ -211,30 +225,115 @@ export function homePage(ctx) {
     title: L.meta.title,
     description: L.meta.description,
     bodyClass: 'page-home',
-    head: `<script type="application/ld+json">${jsonLd(ctx)}</script>`,
-    body: hero + ask + layers + compat + faq + closing,
+    markdown: '/index.md',
+    head: jsonLd(ctx),
+    body: hero + ask + layers + compat + factsSec + faq + closing,
   };
+}
+
+const plain = (md) => md.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/\*\*/g, '').replace(/\n+/g, ' ').trim();
+
+// Shared structured-data nodes; every page links to them by @id.
+function baseGraph(ctx) {
+  const { cfg, t, assets } = ctx;
+  const site = cfg.SITE_URL;
+  const sameAs = [cfg.stores.appStore.url, cfg.stores.googlePlay.url].filter(Boolean);
+  return [
+    {
+      '@type': 'Organization',
+      '@id': `${site}/#organization`,
+      name: 'Natra',
+      url: `${site}/`,
+      logo: { '@type': 'ImageObject', url: `${site}/icon-512.png`, width: 512, height: 512 },
+      email: cfg.email,
+      founder: { '@type': 'Person', name: cfg.author },
+      address: { '@type': 'PostalAddress', addressLocality: 'Tbilisi', addressCountry: 'GE' },
+      contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: cfg.email, url: `${site}/support`, availableLanguage: 'English' },
+      ...(sameAs.length ? { sameAs } : {}),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site}/#website`,
+      name: 'Natra',
+      url: `${site}/`,
+      description: t.landing.meta.description,
+      inLanguage: t.lang,
+      publisher: { '@id': `${site}/#organization` },
+    },
+  ];
+}
+
+function faqNode(id, items) {
+  return {
+    '@type': 'FAQPage',
+    '@id': id,
+    mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: plain(f.a) } })),
+  };
+}
+
+export function ldScript(graph) {
+  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`;
 }
 
 function jsonLd(ctx) {
   const { cfg, t, assets } = ctx;
+  const site = cfg.SITE_URL;
+  const L = t.landing;
   const sameAs = [cfg.stores.appStore.url, cfg.stores.googlePlay.url].filter(Boolean);
-  const data = {
-    '@context': 'https://schema.org',
-    '@type': 'MobileApplication',
-    name: 'Natra',
-    alternateName: 'Natra: Birth Chart & Astrology',
-    description: t.landing.meta.description,
-    url: ctx.url('/', { absolute: true }),
-    image: `${cfg.SITE_URL}/${assets.og.file}`,
-    applicationCategory: 'LifestyleApplication',
-    operatingSystem: 'iOS, Android',
-    inLanguage: t.lang,
-    author: { '@type': 'Person', name: cfg.author },
-    publisher: { '@type': 'Person', name: cfg.author },
-    ...(sameAs.length ? { sameAs } : {}),
-  };
-  return JSON.stringify(data).replace(/</g, '\\u003c');
+  const screens = ['ask-verdict', 'home', 'chart-wheel', 'compatibility'].map((s) => `${site}/${assets.screens[s].fallback.file}`);
+  return ldScript([
+    ...baseGraph(ctx),
+    {
+      '@type': 'WebPage',
+      '@id': `${site}/#webpage`,
+      url: `${site}/`,
+      name: L.meta.title,
+      description: L.meta.description,
+      isPartOf: { '@id': `${site}/#website` },
+      about: { '@id': `${site}/#app` },
+      primaryImageOfPage: `${site}/${assets.og.file}`,
+      inLanguage: t.lang,
+    },
+    {
+      '@type': 'MobileApplication',
+      '@id': `${site}/#app`,
+      name: 'Natra',
+      alternateName: 'Natra: Birth Chart & Astrology',
+      description: t.agents.summary,
+      url: `${site}/`,
+      image: `${site}/${assets.og.file}`,
+      screenshot: screens,
+      applicationCategory: 'LifestyleApplication',
+      applicationSubCategory: 'Astrology',
+      operatingSystem: 'iOS, Android',
+      inLanguage: t.lang,
+      featureList: t.agents.features,
+      keywords: 'birth chart, natal chart, horoscope, daily horoscope, astrology, love compatibility, synastry, horary astrology, transits',
+      author: { '@id': `${site}/#organization` },
+      publisher: { '@id': `${site}/#organization` },
+      ...(sameAs.length ? { sameAs } : {}),
+    },
+    faqNode(`${site}/#faq`, L.faq.items),
+  ]);
+}
+
+export function supportLd(ctx) {
+  const { cfg, t } = ctx;
+  const site = cfg.SITE_URL;
+  return ldScript([
+    ...baseGraph(ctx),
+    { '@type': ['WebPage', 'ContactPage'], '@id': `${site}/support#webpage`, url: `${site}/support`, name: t.support.meta.title, description: t.support.meta.description, isPartOf: { '@id': `${site}/#website` }, about: { '@id': `${site}/#organization` }, inLanguage: t.lang },
+    faqNode(`${site}/support#faq`, t.support.items),
+  ]);
+}
+
+export function legalLd(ctx, doc) {
+  const { cfg, t } = ctx;
+  const site = cfg.SITE_URL;
+  return ldScript([
+    ...baseGraph(ctx),
+    { '@type': 'WebPage', '@id': `${site}/${doc.key}#webpage`, url: `${site}/${doc.key}`, name: `${doc.title} — Natra`, description: t.legal[doc.key].description, dateModified: doc.updatedISO, isPartOf: { '@id': `${site}/#website` }, publisher: { '@id': `${site}/#organization` }, inLanguage: t.lang },
+  ]);
 }
 
 function weekStrip(legend) {
@@ -266,11 +365,13 @@ export function legalPage(ctx, doc) {
     title: `${doc.title} — Natra`,
     description: t.legal[doc.key].description,
     bodyClass: 'page-legal',
+    markdown: `/${doc.key}.md`,
+    head: legalLd(ctx, doc),
     body: `
       <div class="wrap legal">
         <p class="legal__meta"><span class="micro">${esc(t.ui.documentLabel)}</span><time class="pill" datetime="${attr(doc.updatedISO)}">${esc(t.ui.updated)} ${esc(doc.updatedShort)}</time></p>
         <details class="card toc">
-          <summary><span class="micro">${esc(t.ui.contents)}</span>${CHEV}</summary>
+          <summary><span class="acc__row"><span class="micro">${esc(t.ui.contents)}</span>${CHEV}</span></summary>
           <ol>${toc}</ol>
         </details>
         <article class="prose prose--legal" data-legal-doc="${attr(doc.key)}">
@@ -292,6 +393,8 @@ export function supportPage(ctx) {
     title: S.meta.title,
     description: S.meta.description,
     bodyClass: 'page-support',
+    markdown: '/support.md',
+    head: supportLd(ctx),
     body: `
       <div class="wrap wrap--narrow support">
         <p class="micro">${esc(S.eyebrow)}</p>
@@ -313,7 +416,7 @@ export function supportPage(ctx) {
           ${S.items
             .map(
               (f) => `<details class="acc__item" id="${attr(f.id)}">
-            <summary class="acc__q"><span class="acc__icon">${icon(f.icon, 18)}</span><span class="acc__label">${esc(f.q)}</span>${CHEV}</summary>
+            <summary class="acc__q"><span class="acc__row"><span class="acc__icon">${icon(f.icon, 18)}</span><span class="acc__label">${esc(f.q)}</span>${CHEV}</span></summary>
             <div class="acc__panel"><div class="acc__inner prose">${md.block(f.a)}</div></div>
           </details>`
             )

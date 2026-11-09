@@ -10,12 +10,14 @@
     "preview": "serve dist -l 4321",
     "og": "node scripts/make-og.mjs",
     "crop-framed": "node scripts/crop-framed.mjs",
-    "shots": "node scripts/page-screenshots.mjs"
+    "shots": "node scripts/page-screenshots.mjs",
+    "qa": "node scripts/qa.mjs"
   },
   "engines": {
     "node": ">=18"
   },
   "devDependencies": {
+    "lightningcss": "^1.33.0",
     "marked": "^15.0.12",
     "node-html-parser": "^7.1.0",
     "serve": "^14.2.6",

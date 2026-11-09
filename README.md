@@ -189,10 +189,9 @@ reports/                  отчёт и скриншоты страниц
 | `llms-full.txt`: все тексты сайта одним файлом | `/llms-full.txt` | Полный контекст без вёрстки |
 | Markdown-копии страниц: `/index.md`, `/support.md`, `/privacy.md`, `/terms.md` | ссылка `rel="alternate" type="text/markdown"` на каждой странице | Агенты читают их без HTML-шума; заголовок `Link: rel=canonical` ведёт на основную страницу |
 | Разметка Schema.org одним графом: Organization, WebSite, WebPage, MobileApplication (функции, скриншоты, категория, ключевые слова), FAQPage на главной и в Support, ContactPage, даты документов | `<script type="application/ld+json">` | Google и ассистенты понимают, что это приложение, кто его делает и что оно умеет |
-| Видимый блок «Natra at a glance»: факты списком «ключ — значение» | главная | Такие блоки модели охотно цитируют дословно |
 | `meta robots`: `max-snippet:-1, max-image-preview:large` | все страницы | Разрешает длинные цитаты и крупные превью |
 
-Тексты для агентов лежат в `content/en/site.json` → `agents` и `landing.facts`. Меняйте их там: `llms.txt`, Markdown-копии и разметка пересоберутся сами.
+Тексты для агентов лежат в `content/en/site.json` → `agents` и `landing.facts` (факты «Natra at a glance» попадают только в `llms.txt` и `/index.md`, на странице их нет). Меняйте их там: `llms.txt`, Markdown-копии и разметка пересоберутся сами.
 
 **Важно.** Gemini опирается на индекс Google, ChatGPT и Copilot — в основном на индекс Bing. Поэтому главное — чтобы сайт попал в эти индексы. Это делается один раз, вручную:
 

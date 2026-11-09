@@ -172,20 +172,6 @@ export function homePage(ctx) {
         </div>
       </section>`;
 
-  const F = L.facts;
-  const factsSec = `
-      <section class="section" id="facts" aria-labelledby="facts-title">
-        <div class="wrap wrap--narrow">
-          <div class="section__head">
-            <p class="micro">${esc(F.eyebrow)}</p>
-            <h2 id="facts-title" class="h2">${esc(F.title)}</h2>
-          </div>
-          <dl class="card facts">
-            ${F.items.map(([k, v]) => `<div class="facts__row"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('\n            ')}
-          </dl>
-        </div>
-      </section>`;
-
   const faq = `
       <section class="section" id="faq" aria-labelledby="faq-title">
         <div class="wrap wrap--narrow">
@@ -227,7 +213,7 @@ export function homePage(ctx) {
     bodyClass: 'page-home',
     markdown: '/index.md',
     head: jsonLd(ctx),
-    body: hero + ask + layers + compat + factsSec + faq + closing,
+    body: hero + ask + layers + compat + faq + closing,
   };
 }
 

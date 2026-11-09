@@ -1234,47 +1234,6 @@ a.store:hover {
   color: var(--text-2);
 }
 
-/* ---------- At a glance (facts list, mono keys) ---------- */
-
-.facts {
-  margin: 0;
-  padding: 6px 22px;
-  border-radius: var(--r);
-  background: var(--bg-2);
-  box-shadow: none;
-}
-.facts__row {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  gap: 16px;
-  padding: 14px 0;
-}
-.facts__row + .facts__row {
-  border-top: 1px solid var(--divider);
-}
-.facts dt {
-  font: 400 12px/1.6 var(--mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent);
-  padding-top: 2px;
-}
-.facts dd {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--text);
-}
-@media (max-width: 559px) {
-  .facts {
-    padding: 4px 16px;
-  }
-  .facts__row {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-}
-
 /* ---------- Accordion (app FAQ): landing FAQ and Support ---------- */
 
 .acc {

@@ -3,3 +3,4 @@ dist/
 .DS_Store
 src/assets/og/.og.html
 reports/qa/
+.wrangler/

@@ -337,12 +337,13 @@ const PLACEHOLDER_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="1024" h
 <path d="M512 250c14 140 122 248 262 262-140 14-248 122-262 262-14-140-122-248-262-262 140-14 248-122 262-262Z" fill="#fff"/>
 </svg>`;
 
+// CSP: only our own files, plus Cloudflare Web Analytics (cookieless; Cloudflare injects its beacon on the live domain).
 const HEADERS = `/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), browsing-topics=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; font-src 'self'; style-src 'self'; script-src 'self' https://static.cloudflareinsights.com; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

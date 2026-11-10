@@ -1,7 +1,7 @@
 # Natra — сайт
 
 Статический сайт приложения Natra: лендинг, Privacy Policy, Terms of Use, Support и страница 404.
-Без сервера, cookies, аналитики и сторонних скриптов. Шрифты лежат в проекте, внешних запросов нет.
+Без сервера, cookies и рекламных трекеров. Единственный внешний скрипт — Cloudflare Web Analytics (без cookies, вставляется самим Cloudflare на живом домене). Шрифты лежат в проекте.
 
 | Адрес | Страница | Файл в `dist/` |
 |---|---|---|
@@ -210,7 +210,7 @@ reports/                  отчёт и скриншоты страниц
 - Там же: **Manage robots.txt** (managed robots.txt от Cloudflare) выключен, чтобы использовался наш `robots.txt`.
 - **Caching → Configuration → Crawler Hints** → включить. Cloudflare сам сообщает Bing и другим поисковикам об изменениях на сайте (IndexNow).
 - **Email Address Obfuscation** (раздел **Scrape Shield**, в новом интерфейсе — **Security → Settings**) → выключить. Иначе Cloudflare заменяет почту в коде страниц на `[email protected]`, и поисковики, ИИ-агенты и все, кто читает страницу без JavaScript, не видят адрес поддержки. На сайте стоит защита `<!--email_off-->`, но лучше выключить и саму настройку.
-- **Web Analytics** (**Workers & Pages → natra-landinig → Metrics** или **Analytics & Logs → Web Analytics**) → выключить автоматическую установку. Сайт сделан без аналитики, а этот скрипт к тому же блокирует наш CSP.
+- **Web Analytics** (**Analytics & Logs → Web Analytics**, или **Workers & Pages → natra-landinig → Metrics**) → оставить включённой автоматическую установку. Это статистика без cookies: просмотры страниц, источники переходов (Google, Bing, ChatGPT и т. д.), страны, устройства, скорость загрузки. Cloudflare сам вставляет её скрипт на живом домене; в CSP (`_headers`) разрешены `static.cloudflareinsights.com` и `cloudflareinsights.com`. Чтобы отказаться от аналитики, выключите её в Cloudflare и уберите эти два адреса из CSP в `scripts/build.mjs`.
 - Если Google или Bing пишут, что не могут скачать страницу: **Security → Events** — посмотрите, нет ли блокировок для `Googlebot` или `bingbot`, и какая настройка их вызвала (Bot Fight Mode, AI bots, WAF).
 
 ### 4. Когда приложение выйдет

@@ -329,5 +329,5 @@ Lighthouse 12.8.2, headless Chromium, сайт отдавался через `np
 
 ### v3.2 — что Cloudflare добавляет поверх сайта (2026-11-10)
 - На живом сайте включена **Email Address Obfuscation**: почта в коде страниц заменялась на `[email protected]` (Support — 2 места, Privacy — 5). Добавлена защита `<!--email_off-->` вокруг содержимого страниц; настройку нужно выключить и в Cloudflare.
-- Cloudflare вставлял скрипт **Web Analytics** (`static.cloudflareinsights.com`). Это противоречит заданию (без аналитики), и CSP его всё равно блокирует. Нужно выключить в Cloudflare.
+- Cloudflare вставлял скрипт **Web Analytics** (`static.cloudflareinsights.com`), а CSP его блокировал. **Решение владельца: аналитику оставить.** CSP теперь разрешает `static.cloudflareinsights.com` (скрипт) и `cloudflareinsights.com` (отправка данных). Это отступление от исходного задания «без аналитики»: Cloudflare Web Analytics не ставит cookies и не отслеживает людей между сайтами, поэтому баннер согласия обычно не нужен. Privacy Policy сейчас описывает только приложение; при следующем обновлении юристу стоит добавить строку про сайт.
 - Bing «URL cannot be indexed / not able to fetch» и Google «Couldn't fetch» при проверках с нашей стороны не воспроизводятся (200 на любые варианты запроса, в том числе с именем bingbot). Диагностика — **Security → Events** в Cloudflare.

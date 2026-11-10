@@ -34,7 +34,9 @@ export function robotsTxt(cfg) {
 # Search engines and AI assistants are welcome to read, cite and recommend this site.
 # A short summary for language models: ${abs(cfg, '/llms.txt')}
 
+# Content Signals (contentsignals.org): search and AI answers may use this site; so may model training.
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 ${AI_AGENTS.map((a) => `User-agent: ${a}`).join('\n')}

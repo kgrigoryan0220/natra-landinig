@@ -36,6 +36,7 @@ npm run preview
 | `npm run build` | Собирает сайт в папку `dist/` |
 | `npm run check` | Проверяет, что тексты Privacy и Terms на сайте совпадают с `.md` слово в слово (запускать после `build`) |
 | `npm run preview` | Показывает `dist/` локально |
+| `npx wrangler pages dev dist` | Показывает сайт локально вместе с функцией Markdown для агентов (как на Cloudflare). Проверка: `curl -H "Accept: text/markdown" http://localhost:8788/` |
 | `npm run og` | Перерисовывает картинку для соцсетей 1200×630. Нужен Playwright |
 | `npm run shots` | Снимает все страницы в ширинах 1440 и 390 в `reports/30-site/`. Нужен Playwright |
 | `npm run qa` | Проверяет вёрстку всех страниц на ширинах 360–1440 (горизонтальная прокрутка, вылезающие элементы, мелкие кнопки, незагруженные картинки) и снимает их в `reports/qa/`. Для Safari-движка: `npm run qa -- --browsers=webkit,chromium`. Нужен Playwright |
@@ -188,6 +189,8 @@ reports/                  отчёт и скриншоты страниц
 | `llms.txt`: короткая «визитка» для языковых моделей — что такое Natra, факты, когда её уместно предлагать, функции, ограничения, ссылки | `/llms.txt` | Стандарт llmstxt.org, его читают агенты |
 | `llms-full.txt`: все тексты сайта одним файлом | `/llms-full.txt` | Полный контекст без вёрстки |
 | Markdown-копии страниц: `/index.md`, `/support.md`, `/privacy.md`, `/terms.md` | ссылка `rel="alternate" type="text/markdown"` на каждой странице | Агенты читают их без HTML-шума; заголовок `Link: rel=canonical` ведёт на основную страницу |
+| Markdown по запросу (content negotiation): если агент присылает `Accept: text/markdown`, по обычному адресу (`/`, `/support`, `/privacy`, `/terms`) он получает Markdown-версию вместо HTML | `functions/_middleware.js` (Cloudflare Pages Function), маршруты в `dist/_routes.json` | Так агенты получают чистый текст без лишних запросов. Браузеры по-прежнему получают HTML. Функция запускается только на четырёх адресах страниц, файлы отдаются напрямую |
+| Content Signals в `robots.txt`: `search=yes, ai-input=yes, ai-train=yes` | `/robots.txt` | Явное разрешение использовать сайт в поиске, в ответах ИИ и для обучения моделей. Lighthouse считает эту строку «неизвестной директивой» (SEO 92 вместо 100), поисковики её просто игнорируют |
 | Разметка Schema.org одним графом: Organization, WebSite, WebPage, MobileApplication (функции, скриншоты, категория, ключевые слова), FAQPage на главной и в Support, ContactPage, даты документов | `<script type="application/ld+json">` | Google и ассистенты понимают, что это приложение, кто его делает и что оно умеет |
 | `meta robots`: `max-snippet:-1, max-image-preview:large` | все страницы | Разрешает длинные цитаты и крупные превью |
 
@@ -220,4 +223,6 @@ reports/                  отчёт и скриншоты страниц
 ### 5. Упоминания на других сайтах
 Ассистенты чаще советуют то, что обсуждают в разных местах: обзоры, каталоги приложений, Product Hunt, тематические сообщества. Это уже не код сайта, но сильнее всего влияет на рекомендации. Гарантий, что Gemini или ChatGPT начнут предлагать Natra, никто дать не может: сайт сделан так, чтобы им было максимально просто это делать.
 
-Если вы не хотите, чтобы тексты сайта использовались для обучения моделей, уберите из `AI_AGENTS` в `scripts/lib/agents.mjs` строки `GPTBot`, `Google-Extended`, `Applebot-Extended` и `CCBot` и допишите для них `Disallow: /`. Поиск и ответы ассистентов от этого не пострадают.
+Если вы не хотите, чтобы тексты сайта использовались для обучения моделей, поставьте `ai-train=no` в строке `Content-Signal` в `scripts/lib/agents.mjs`, уберите из `AI_AGENTS` строки `GPTBot`, `Google-Extended`, `Applebot-Extended` и `CCBot` и допишите для них `Disallow: /`. Поиск и ответы ассистентов от этого не пострадают.
+
+**Cloudflare → AI Crawl Control → Diagnostics:** кнопку «Cloudflare managed robots.txt» не включайте. Управляемый robots.txt Cloudflare по умолчанию ставит `ai-train=no` и закрывает часть ИИ-ботов, то есть перекрывает наш. Content Signals и Markdown Negotiation уже сделаны в коде сайта.

@@ -162,6 +162,8 @@ ${sitemap.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><
     )
   );
   await write('_headers', HEADERS);
+  // Only page routes run the Pages Function (functions/_middleware.js); files are served directly.
+  await write('_routes.json', JSON.stringify({ version: 1, include: ['/', '/index.html', '/support', '/support.html', '/privacy', '/privacy.html', '/terms', '/terms.html'], exclude: [] }, null, 2));
 
   console.log(`Built ${sitemap.length + 1} pages into dist/ in ${((Date.now() - started) / 1000).toFixed(1)}s (SITE_URL=${cfg.SITE_URL})`);
 }

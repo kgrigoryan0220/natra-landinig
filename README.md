@@ -209,6 +209,9 @@ reports/                  отчёт и скриншоты страниц
 - **Security → Bots** (или **AI Crawl Control**): переключатель **Block AI bots** должен быть выключен, а боты ассистентов разрешены. Иначе Cloudflare будет отдавать им ошибку, несмотря на `robots.txt`.
 - Там же: **Manage robots.txt** (managed robots.txt от Cloudflare) выключен, чтобы использовался наш `robots.txt`.
 - **Caching → Configuration → Crawler Hints** → включить. Cloudflare сам сообщает Bing и другим поисковикам об изменениях на сайте (IndexNow).
+- **Email Address Obfuscation** (раздел **Scrape Shield**, в новом интерфейсе — **Security → Settings**) → выключить. Иначе Cloudflare заменяет почту в коде страниц на `[email protected]`, и поисковики, ИИ-агенты и все, кто читает страницу без JavaScript, не видят адрес поддержки. На сайте стоит защита `<!--email_off-->`, но лучше выключить и саму настройку.
+- **Web Analytics** (**Workers & Pages → natra-landinig → Metrics** или **Analytics & Logs → Web Analytics**) → выключить автоматическую установку. Сайт сделан без аналитики, а этот скрипт к тому же блокирует наш CSP.
+- Если Google или Bing пишут, что не могут скачать страницу: **Security → Events** — посмотрите, нет ли блокировок для `Googlebot` или `bingbot`, и какая настройка их вызвала (Bot Fight Mode, AI bots, WAF).
 
 ### 4. Когда приложение выйдет
 - Впишите ссылки сторов в `site.config.mjs` → `stores`. Они автоматически попадут в разметку (`sameAs`), в `llms.txt` и на кнопки. Ассистенты охотнее советуют приложения, которые можно скачать прямо сейчас.

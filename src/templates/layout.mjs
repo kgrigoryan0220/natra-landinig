@@ -51,6 +51,7 @@ export function layout(ctx, page) {
     ${page.head || ''}
   </head>
   <body class="${attr(page.bodyClass || '')}">
+    <!--email_off--><!-- Cloudflare: keep e-mail addresses as plain text for people, search engines and AI assistants -->
     <a class="skip" href="#main">${esc(t.ui.skip)}</a>
     <div class="sky" aria-hidden="true"><div class="sky__dust"></div></div>
     ${header(ctx, page)}
@@ -58,6 +59,7 @@ export function layout(ctx, page) {
 ${page.body}
     </main>
     ${footer(ctx)}
+    <!--/email_off-->
     <script src="/${assets.js}" defer></script>
   </body>
 </html>

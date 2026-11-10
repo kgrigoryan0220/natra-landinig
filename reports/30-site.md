@@ -326,3 +326,8 @@ Lighthouse 12.8.2, headless Chromium, сайт отдавался через `np
 
 ### v3.1
 - Блок «Natra at a glance» убран со страницы по решению владельца. Прятать текст от людей и показывать его только ботам нельзя: поисковики считают это уловкой (cloaking). Те же факты остаются там, где их читают агенты: `llms.txt`, `/index.md` и разметка Schema.org (описание приложения, список функций, организация, FAQ).
+
+### v3.2 — что Cloudflare добавляет поверх сайта (2026-11-10)
+- На живом сайте включена **Email Address Obfuscation**: почта в коде страниц заменялась на `[email protected]` (Support — 2 места, Privacy — 5). Добавлена защита `<!--email_off-->` вокруг содержимого страниц; настройку нужно выключить и в Cloudflare.
+- Cloudflare вставлял скрипт **Web Analytics** (`static.cloudflareinsights.com`). Это противоречит заданию (без аналитики), и CSP его всё равно блокирует. Нужно выключить в Cloudflare.
+- Bing «URL cannot be indexed / not able to fetch» и Google «Couldn't fetch» при проверках с нашей стороны не воспроизводятся (200 на любые варианты запроса, в том числе с именем bingbot). Диагностика — **Security → Events** в Cloudflare.

@@ -59,6 +59,7 @@ export function layout(ctx, page) {
 ${page.body}
     </main>
     ${footer(ctx)}
+    ${getBar(ctx, page)}
     <!--/email_off-->
     <script src="/${assets.js}" defer></script>
   </body>
@@ -66,19 +67,17 @@ ${page.body}
 `;
 }
 
+// Link to the right store for this device; site.js swaps it to Google Play on Android.
+function storeLink(cfg) {
+  const ios = cfg.stores.appStore.url;
+  const android = cfg.stores.googlePlay.url;
+  if (!ios && !android) return '';
+  return `href="${attr(ios || android)}" data-store-link${ios ? ` data-ios="${attr(ios)}"` : ''}${android ? ` data-android="${attr(android)}"` : ''}`;
+}
+
 function header(ctx, page) {
-  const { t, url, assets } = ctx;
-  const onHome = page.key === 'home';
-  const anchor = (id) => (onHome ? `#${id}` : `${url('/')}#${id}`);
-  const links = [
-    [anchor('ask'), t.ui.nav.ask, false],
-    [anchor('inside'), t.ui.nav.layers, false],
-    [anchor('compatibility'), t.ui.nav.compatibility, false],
-    [anchor('faq'), t.ui.nav.faq, false],
-    [url('/support'), t.ui.nav.support, page.key === 'support'],
-  ];
-  const link = ([href, label, current], cls = '') =>
-    `<a${cls ? ` class="${cls}"` : ''} href="${attr(href)}"${current ? ' aria-current="page"' : ''}>${esc(label)}</a>`;
+  const { t, cfg, url, assets } = ctx;
+  const link = storeLink(cfg);
   return `<header class="site-header">
       <div class="wrap site-header__inner">
         <a class="brand" href="${attr(url('/'))}" aria-label="${attr(t.ui.homeLabel)}">
@@ -86,16 +85,23 @@ function header(ctx, page) {
           <span class="brand__name">Natra</span>
         </a>
         <nav class="site-nav" aria-label="${attr(t.ui.nav.label)}">
-          ${links.filter((l, i) => i !== 3).map((l) => link(l)).join('\n          ')}
+          ${t.ui.nav.sections
+            .map((sec) => `<a class="site-nav__anchor" href="${page.key === 'home' ? '' : attr(url('/'))}#${attr(sec.id)}">${esc(sec.label)}</a>`)
+            .join('\n          ')}
+          <a class="site-nav__support" href="${attr(url('/support'))}"${page.key === 'support' ? ' aria-current="page"' : ''}>${esc(t.ui.nav.support)}</a>
         </nav>
-        <details class="menu" data-menu>
-          <summary class="menu__btn" aria-label="${attr(t.ui.menu)}"><span class="acc__row"><svg class="menu__ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><path class="menu__l1" d="M4 8h16"/><path class="menu__l2" d="M4 16h16"/></svg></span></summary>
-          <nav class="menu__panel" aria-label="${attr(t.ui.nav.label)}">
-            ${links.map((l) => link(l, 'menu__link')).join('\n            ')}
-          </nav>
-        </details>
+        ${link ? `<a class="getapp" ${link}>${esc(t.ui.getApp)}</a>` : ''}
       </div>
     </header>`;
+}
+
+// Sticky "Get the app" bar on phones (home page, only once store links exist).
+function getBar(ctx, page) {
+  const link = storeLink(ctx.cfg);
+  if (!link || page.key !== 'home') return '';
+  return `<div class="getbar" data-getbar hidden>
+      <a class="btn btn--primary getbar__btn" ${link}>${esc(ctx.t.ui.getApp)}</a>
+    </div>`;
 }
 
 function footer(ctx) {
@@ -119,33 +125,34 @@ function footer(ctx) {
 }
 
 // Store buttons. Inactive "Coming soon" until a URL is set in site.config.mjs.
+// Once live, phones see only their own store (class set by site.js); desktops see both.
 export function storeButtons(ctx, { compact = false } = {}) {
   const { t, cfg } = ctx;
   const items = [
-    { s: cfg.stores.appStore, name: t.ui.appStore, full: t.ui.appStoreFull, link: t.ui.appStoreLink },
-    { s: cfg.stores.googlePlay, name: t.ui.googlePlay, full: t.ui.googlePlayFull, link: t.ui.googlePlayLink },
+    { s: cfg.stores.appStore, os: 'ios', name: t.ui.appStore, full: t.ui.appStoreFull, link: t.ui.appStoreLink },
+    { s: cfg.stores.googlePlay, os: 'android', name: t.ui.googlePlay, full: t.ui.googlePlayFull, link: t.ui.googlePlayLink },
   ];
+  const live = items.some((i) => i.s.url);
   const html = items
-    .map(({ s, name, full, link }) => {
+    .map(({ s, os, name, full, link }) => {
       if (s.url && s.badge) {
-        return `<li><a class="store-badge" href="${attr(s.url)}"><img src="/badges/${attr(s.badge)}" alt="${attr(link)}" height="48"></a></li>`;
+        return `<li class="stores__item stores__item--${os}"><a class="store-badge" href="${attr(s.url)}"><img src="/badges/${attr(s.badge)}" alt="${attr(link)}" height="48"></a></li>`;
       }
       if (s.url) {
-        return `<li><a class="store" href="${attr(s.url)}"><span class="store__kicker">${esc(link.replace(name, '').trim())}</span><span class="store__name">${esc(name)}</span></a></li>`;
+        return `<li class="stores__item stores__item--${os}"><a class="store" href="${attr(s.url)}"><span class="store__kicker">${esc(link.replace(name, '').trim())}</span><span class="store__name">${esc(name)}</span></a></li>`;
       }
-      return `<li><span class="store is-soon"><span class="store__kicker" aria-hidden="true">${esc(t.ui.storeSoon)}</span><span class="store__name" aria-hidden="true">${esc(name)}</span><span class="sr-only">${esc(full)}</span></span></li>`;
+      return `<li class="stores__item"><span class="store is-soon"><span class="store__kicker" aria-hidden="true">${esc(t.ui.storeSoon)}</span><span class="store__name" aria-hidden="true">${esc(name)}</span><span class="sr-only">${esc(full)}</span></span></li>`;
     })
     .join('');
-  return `<ul class="stores${compact ? ' stores--compact' : ''}" aria-label="${attr(t.ui.storesLabel)}">${html}</ul>`;
+  return `<ul class="stores${live ? ' is-live' : ''}${compact ? ' stores--compact' : ''}" aria-label="${attr(t.ui.storesLabel)}">${html}</ul>`;
 }
 
-// A phone frame drawn in CSS around a raw screenshot.
+// A screenshot exported inside a real iPhone frame (transparent around it).
 export function phone(ctx, slot, alt, { eager = false, priority = false, sizes, cls = '' } = {}) {
   const img = ctx.assets.screens[slot];
   if (!img) throw new Error(`Missing screenshot slot "${slot}"`);
   const srcset = (fmt) => img.variants[fmt].map((v) => `/${v.file} ${v.width}w`).join(', ');
   return `<figure class="phone ${attr(cls)}">
-          <div class="phone__screen">
             <picture>
               <source type="image/avif" srcset="${srcset('avif')}" sizes="${attr(sizes)}">
               <source type="image/webp" srcset="${srcset('webp')}" sizes="${attr(sizes)}">
@@ -153,6 +160,5 @@ export function phone(ctx, slot, alt, { eager = false, priority = false, sizes, 
                 eager ? '' : ' loading="lazy"'
               } decoding="async"${priority ? ' fetchpriority="high"' : ''}>
             </picture>
-          </div>
         </figure>`;
 }

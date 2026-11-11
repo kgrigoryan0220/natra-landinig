@@ -52,17 +52,20 @@ function factsList(t) {
 
 export function homeMarkdown(cfg, t) {
   const L = t.landing;
+  const H = L.hero;
   const out = [];
-  out.push(`# ${L.meta.title}`, '', `> ${L.hero.promise}`, '', L.hero.lead, '', L.hero.note, '');
-  out.push(`## ${L.facts.title}`, '', factsList(t), '');
-  out.push(`## ${L.ask.eyebrow}: ${L.ask.title}`, '', L.ask.lead, '');
-  L.ask.steps.forEach((s, i) => out.push(`${i + 1}. **${s.title}.** ${s.text}`));
-  out.push('', L.ask.footnote, '');
-  out.push(`## ${L.layers.eyebrow}: ${L.layers.title}`, '', L.layers.lead, '');
-  L.layers.items.forEach((it) => out.push(`### ${it.label} — ${it.title}`, '', it.text, ''));
-  out.push(`## ${L.compatibility.eyebrow}: ${L.compatibility.title}`, '', L.compatibility.lead, '');
-  L.compatibility.points.forEach((p) => out.push(`- **${p.title}.** ${p.text}`));
-  out.push('', `## ${L.faq.title}`, '');
+  out.push(`# ${L.meta.title}`, '', `## ${H.title}`, '', H.sub, '', H.soon, '');
+  out.push(`### ${H.exampleLabel}s`, '');
+  H.examples.forEach((e) => out.push(`- **${e.q}** — ${e.verdict}, ${H.confidenceLabel.toLowerCase()} ${e.confidence}%. ${e.reading}`));
+  out.push('', `## ${L.facts.title}`, '', factsList(t), '');
+  out.push(`## ${L.how.title}`, '');
+  L.how.steps.forEach((s, i) => out.push(`${i + 1}. **${s.title}.** ${s.text}`));
+  out.push('', L.how.note, '');
+  out.push(`## ${L.features.title}`, '');
+  L.features.items.forEach((f) => out.push(`### ${f.title}`, '', f.text, ''));
+  out.push(`## ${L.trust.title}`, '');
+  L.trust.items.forEach((x) => out.push(`- **${x.title}.** ${x.text}`));
+  out.push('', L.trust.note, '', `## ${L.faq.title}`, '');
   L.faq.items.forEach((f) => out.push(`### ${f.q}`, '', mdLinks(cfg, f.a), ''));
   out.push(...linksBlock(cfg, t), '');
   return out.join('\n');

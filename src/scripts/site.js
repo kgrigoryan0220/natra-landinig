@@ -1,4 +1,4 @@
-// Natra site script: page position, FAQ accordions, "Copy email".
+// Natra site script: page position, FAQ accordions, hero examples, store links, "Copy email".
 // No cookies, no tracking, no third parties.
 (function () {
   var root = document.documentElement;
@@ -122,58 +122,102 @@
     openFromHash(true);
   });
 
-  /* ---------- Mobile menu ---------- */
-  var menu = document.querySelector('[data-menu]');
-  if (menu) {
-    menu.addEventListener('click', function (e) {
-      if (e.target.closest('a')) menu.open = false;
+  /* ---------- Header section links: mark the section on screen ---------- */
+  var anchors = document.querySelectorAll('.site-nav__anchor[href^="#"]');
+  if (anchors.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    Array.prototype.forEach.call(anchors, function (a) {
+      var sec = document.getElementById(a.getAttribute('href').slice(1));
+      if (sec) byId[sec.id] = a;
     });
-    document.addEventListener('click', function (e) {
-      if (menu.open && !menu.contains(e.target)) menu.open = false;
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && menu.open) {
-        menu.open = false;
-        menu.querySelector('summary').focus();
-      }
+    var spy = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          var a = byId[e.target.id];
+          if (a) a.classList.toggle('is-current', e.isIntersecting);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    Object.keys(byId).forEach(function (id) {
+      spy.observe(document.getElementById(id));
     });
   }
 
-  /* ---------- Carousels (phones): swipe cards with dots ---------- */
-  Array.prototype.forEach.call(document.querySelectorAll('[data-carousel]'), function (track) {
-    var items = Array.prototype.slice.call(track.children);
-    if (items.length < 2 || !('IntersectionObserver' in window)) return;
-    var dots = document.createElement('div');
-    dots.className = 'dots';
-    dots.setAttribute('aria-hidden', 'true');
-    items.forEach(function (item, i) {
-      var dot = document.createElement('button');
-      dot.type = 'button';
-      dot.tabIndex = -1;
-      dot.className = 'dots__dot' + (i === 0 ? ' is-active' : '');
-      dot.addEventListener('click', function () {
-        track.scrollTo({ left: item.offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft || 0), behavior: reduceMotion ? 'auto' : 'smooth' });
-      });
-      dots.appendChild(dot);
-    });
-    track.parentNode.insertBefore(dots, track.nextSibling);
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            var i = items.indexOf(entry.target);
-            Array.prototype.forEach.call(dots.children, function (d, k) {
-              d.classList.toggle('is-active', k === i);
-            });
-          }
-        });
-      },
-      { root: track, threshold: 0.6 }
-    );
-    items.forEach(function (item) {
-      io.observe(item);
-    });
+  /* ---------- Platform: phones see only their own store once the app is live ---------- */
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  if (isIOS) root.classList.add('is-ios');
+  if (isAndroid) root.classList.add('is-android');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-store-link]'), function (a) {
+    var href = (isAndroid && a.getAttribute('data-android')) || (isIOS && a.getAttribute('data-ios'));
+    if (href) a.setAttribute('href', href);
   });
+
+  /* ---------- Hero: question chips switch the example answer ---------- */
+  var tries = document.querySelector('[data-tries]');
+  var answer = document.querySelector('[data-answer]');
+  if (tries && answer) {
+    tries.hidden = false;
+    var frame = answer.closest('.answer');
+    var buttons = Array.prototype.slice.call(tries.querySelectorAll('.try'));
+    var q = answer.querySelector('[data-answer-q]');
+    var verdict = answer.querySelector('[data-answer-verdict]');
+    var bar = answer.querySelector('[data-answer-bar]');
+    var pct = answer.querySelector('[data-answer-pct]');
+    var reading = answer.querySelector('[data-answer-reading]');
+    var swapTimer;
+    function show(btn) {
+      var c = btn.getAttribute('data-confidence');
+      answer.className = answer.className.replace(/\btone-\S+/, 'tone-' + btn.getAttribute('data-tone'));
+      q.textContent = '\u201c' + btn.textContent + '\u201d';
+      verdict.textContent = btn.getAttribute('data-verdict');
+      bar.className = 'w-' + c;
+      pct.textContent = c + '%';
+      reading.textContent = btn.getAttribute('data-reading');
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.getAttribute('aria-pressed') === 'true') return;
+        buttons.forEach(function (b) {
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        clearTimeout(swapTimer);
+        if (reduceMotion) return show(btn);
+        frame.classList.add('is-changing');
+        swapTimer = setTimeout(function () {
+          show(btn);
+          frame.classList.remove('is-changing');
+        }, 200);
+      });
+    });
+  }
+
+  /* ---------- Sticky "Get the app" bar: after the hero, hidden near the final buttons ---------- */
+  var getbar = document.querySelector('[data-getbar]');
+  var hero = document.querySelector('[data-hero]');
+  if (getbar && hero && 'IntersectionObserver' in window) {
+    var closing = document.querySelector('[data-closing]');
+    var heroVisible = true;
+    var closingVisible = false;
+    getbar.hidden = false;
+    document.body.classList.add('has-getbar');
+    function update() {
+      getbar.classList.toggle('is-away', heroVisible || closingVisible);
+    }
+    update();
+    new IntersectionObserver(function (e) {
+      heroVisible = e[0].isIntersecting;
+      update();
+    }).observe(hero);
+    if (closing) {
+      new IntersectionObserver(function (e) {
+        closingVisible = e[0].isIntersecting;
+        update();
+      }).observe(closing);
+    }
+  }
 
   /* ---------- Support: "Copy email" ---------- */
   var copyRoot = document.querySelector('[data-copy-root]');

@@ -77,12 +77,13 @@ async function main() {
   // Screenshots
   assets.screens = {};
   for (const slot of SCREEN_SLOTS) assets.screens[slot] = await buildScreen(slot);
+  assets.frame = await buildFrame();
 
   // Open Graph image
   const ogSrc = p('src/assets/og/og-image.png');
   if (!existsSync(ogSrc)) throw new Error('Missing src/assets/og/og-image.png — run `npm run og` first.');
   const og = await fs.readFile(ogSrc);
-  assets.og = { file: `assets/og.${hash(og)}.png`, alt: 'Natra — a personal astrologer that explains, not scares.' };
+  assets.og = { file: `assets/og.${hash(og)}.png`, alt: 'Natra — ask a question, get a clear answer.' };
   await write(assets.og.file, og);
 
   // Official store badges, if the owner added them
@@ -248,8 +249,8 @@ async function buildScreen(slot) {
   const { file, buf } = await readScreenSource(slot);
   const meta = await sharp(buf).metadata();
   const ratio = meta.height / meta.width;
-  if (Math.abs(ratio - 1932 / 894) > 0.08) {
-    warn(`${path.basename(file)} is ${meta.width}×${meta.height}; expected a phone screen (about 9:19.5). Is it still inside a frame? See "npm run crop-framed".`);
+  if (Math.abs(ratio - 3000 / 1470) > 0.06) {
+    warn(`${path.basename(file)} is ${meta.width}×${meta.height}; expected a framed iPhone export (1470×3000, transparent around the frame).`);
   }
   const h = hash(buf);
   const out = { width: 0, height: 0, variants: { avif: [], webp: [] }, fallback: null };
@@ -266,11 +267,19 @@ async function buildScreen(slot) {
     if (w === 480) {
       out.width = width;
       out.height = height;
-      out.fallback = { file: `assets/screens/${slot}-${width}.${h}.jpg` };
-      await write(out.fallback.file, await base.clone().flatten({ background: '#0B0B10' }).jpeg({ quality: 82, mozjpeg: true }).toBuffer());
+      out.fallback = { file: webp }; // keeps the transparent corners around the frame
     }
   }
   return out;
+}
+
+// Empty iPhone frame (transparent screen) for the live answer in the hero.
+async function buildFrame() {
+  const buf = await fs.readFile(p('src/assets/frames/iphone.png'));
+  const h = hash(buf);
+  const file = `assets/frame-660.${h}.webp`;
+  await write(file, await sharp(buf).resize(660).webp({ quality: 85, alphaQuality: 90 }).toBuffer());
+  return { file, width: 660, height: Math.round((660 * 3000) / 1470) };
 }
 
 async function buildIcons() {

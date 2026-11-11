@@ -474,6 +474,10 @@ a.store:hover {
 .section .h2 {
   font-size: clamp(36px, 5vw, 56px);
 }
+/* Header links land with the heading just under the header, not the section's top padding */
+.section[id] {
+  scroll-margin-top: -8px;
+}
 
 /* ---------- Shared bits: progress bar, star, chevron, notes ---------- */
 
@@ -1306,6 +1310,9 @@ html.is-android .stores.is-live .stores__item--ios {
   [id],
   .acc__item {
     scroll-margin-top: 112px;
+  }
+  .section[id] {
+    scroll-margin-top: 64px;
   }
   .getapp {
     display: inline-flex;

@@ -248,7 +248,7 @@ async function buildScreen(slot) {
   const { file, buf } = await readScreenSource(slot);
   const meta = await sharp(buf).metadata();
   const ratio = meta.height / meta.width;
-  if (Math.abs(ratio - 1932 / 894) > 0.08) {
+  if (Math.abs(ratio - 2868 / 1320) > 0.08) {
     warn(`${path.basename(file)} is ${meta.width}×${meta.height}; expected a phone screen (about 9:19.5). Is it still inside a frame? See "npm run crop-framed".`);
   }
   const h = hash(buf);

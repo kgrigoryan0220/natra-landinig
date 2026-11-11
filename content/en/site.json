@@ -98,19 +98,19 @@
           "slot": "compatibility",
           "title": "Love compatibility, chart to chart",
           "text": "Add your partner's birth details and see where you click and where you will need patience.",
-          "alt": "Natra compatibility screen: You + Alex, a 78% match, areas of connection and compatibility dimensions."
+          "alt": "Natra compatibility screen: You + Lucas, an 84% match, a short summary, partner details and compatibility dimensions."
         },
         {
           "slot": "home",
           "title": "A daily horoscope that is actually about you",
           "text": "A short hint every morning, read from your own chart — not written for everyone born that month.",
-          "alt": "Natra Home screen: today's guidance, a colour-coded week and planets in motion."
+          "alt": "Natra Home screen: today's guidance, this week and planets in motion."
         },
         {
           "slot": "chart-wheel",
           "title": "Your birth chart, explained simply",
           "text": "Your Sun, Moon and Rising, and a plain-words card for every planet.",
-          "alt": "Natra chart screen: a natal chart wheel and a card for Sun in Gemini in the 9th house."
+          "alt": "Natra chart screen: a natal chart wheel with cards for Sun in Leo and Moon in Scorpio."
         }
       ]
     },

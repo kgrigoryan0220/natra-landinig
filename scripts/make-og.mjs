@@ -31,7 +31,7 @@ p.promise{font:italic 300 46px/1.15 C;color:#F0EEF8;margin:0 0 30px}
 p.sub{font:400 22px/1.5 S;color:#B9B5CC;margin:0;max-width:520px}
 .phone{position:absolute;padding:9px;border-radius:44px/44px;background:#0c0c12;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 0 0 3px rgba(155,143,255,.08),0 30px 80px -20px #000,0 0 120px -20px rgba(94,62,243,.5)}
 .phone div{position:relative;overflow:hidden;border-radius:36px}
-.phone div::after{content:'';position:absolute;left:33.9%;top:1.3%;width:32.2%;height:4.4%;border-radius:99px;background:#000}
+.phone div::after{content:'';position:absolute;left:39.3%;top:1.5%;width:21.4%;height:3.8%;border-radius:99px;background:#000}
 .phone img{display:block;width:100%}
 .p1{width:270px;left:850px;top:70px;z-index:2}
 .p2{width:236px;left:705px;top:150px;opacity:.9}

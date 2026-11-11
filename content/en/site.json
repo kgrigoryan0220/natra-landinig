@@ -5,6 +5,11 @@
     "skip": "Skip to content",
     "nav": {
       "label": "Main",
+      "sections": [
+        { "id": "how", "label": "How it works" },
+        { "id": "inside", "label": "Features" },
+        { "id": "faq", "label": "FAQ" }
+      ],
       "support": "Support"
     },
     "homeLabel": "Natra, home",

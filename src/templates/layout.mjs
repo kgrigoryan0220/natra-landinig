@@ -85,9 +85,12 @@ function header(ctx, page) {
           <span class="brand__name">Natra</span>
         </a>
         <nav class="site-nav" aria-label="${attr(t.ui.nav.label)}">
+          ${t.ui.nav.sections
+            .map((sec) => `<a class="site-nav__anchor" href="${page.key === 'home' ? '' : attr(url('/'))}#${attr(sec.id)}">${esc(sec.label)}</a>`)
+            .join('\n          ')}
           <a class="site-nav__support" href="${attr(url('/support'))}"${page.key === 'support' ? ' aria-current="page"' : ''}>${esc(t.ui.nav.support)}</a>
-          ${link ? `<a class="getapp" ${link}>${esc(t.ui.getApp)}</a>` : ''}
         </nav>
+        ${link ? `<a class="getapp" ${link}>${esc(t.ui.getApp)}</a>` : ''}
       </div>
     </header>`;
 }

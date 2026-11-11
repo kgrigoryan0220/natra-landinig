@@ -314,7 +314,11 @@ a:hover {
   font-size: 14px;
   text-decoration: none;
 }
+.site-header__inner > .brand {
+  margin-right: auto;
+}
 .site-nav a:hover,
+.site-nav a.is-current,
 .site-nav a[aria-current='page'] {
   color: var(--text);
   border-color: var(--line);
@@ -1266,10 +1270,44 @@ html.is-android .stores.is-live .stores__item--ios {
 /* ---------- Phones (up to 699px) ---------- */
 
 @media (max-width: 699px) {
-  .site-nav__support {
+  /* section links move to a second header row */
+  .site-header__inner {
+    flex-wrap: wrap;
+    row-gap: 0;
+    min-height: 0;
+  }
+  .site-header__inner > .brand,
+  .site-header__inner > .getapp {
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+  .site-nav {
+    order: 3;
+    width: calc(100% + 2 * var(--gutter));
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter) 8px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .site-nav::-webkit-scrollbar {
     display: none;
   }
-  .site-nav .getapp {
+  .site-nav a {
+    flex: none;
+    padding: 7px 11px;
+    font-size: 13px;
+  }
+  .site-nav a:first-child {
+    margin-left: -11px;
+  }
+  [id],
+  .acc__item {
+    scroll-margin-top: 112px;
+  }
+  .getapp {
     display: inline-flex;
     align-items: center;
     min-height: 40px;
@@ -1280,7 +1318,7 @@ html.is-android .stores.is-live .stores__item--ios {
     font: 600 14px/1 var(--body);
     text-decoration: none;
   }
-  .site-nav .getapp:hover {
+  .getapp:hover {
     background: #aea4ff;
     color: var(--bg);
   }

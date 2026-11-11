@@ -122,6 +122,28 @@
     openFromHash(true);
   });
 
+  /* ---------- Header section links: mark the section on screen ---------- */
+  var anchors = document.querySelectorAll('.site-nav__anchor[href^="#"]');
+  if (anchors.length && 'IntersectionObserver' in window) {
+    var byId = {};
+    Array.prototype.forEach.call(anchors, function (a) {
+      var sec = document.getElementById(a.getAttribute('href').slice(1));
+      if (sec) byId[sec.id] = a;
+    });
+    var spy = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          var a = byId[e.target.id];
+          if (a) a.classList.toggle('is-current', e.isIntersecting);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    Object.keys(byId).forEach(function (id) {
+      spy.observe(document.getElementById(id));
+    });
+  }
+
   /* ---------- Platform: phones see only their own store once the app is live ---------- */
   var ua = navigator.userAgent || '';
   var isIOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);

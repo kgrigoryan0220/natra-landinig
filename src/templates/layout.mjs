@@ -144,13 +144,12 @@ export function storeButtons(ctx, { compact = false } = {}) {
   return `<ul class="stores${live ? ' is-live' : ''}${compact ? ' stores--compact' : ''}" aria-label="${attr(t.ui.storesLabel)}">${html}</ul>`;
 }
 
-// A phone frame drawn in CSS around a raw screenshot.
+// A screenshot exported inside a real iPhone frame (transparent around it).
 export function phone(ctx, slot, alt, { eager = false, priority = false, sizes, cls = '' } = {}) {
   const img = ctx.assets.screens[slot];
   if (!img) throw new Error(`Missing screenshot slot "${slot}"`);
   const srcset = (fmt) => img.variants[fmt].map((v) => `/${v.file} ${v.width}w`).join(', ');
   return `<figure class="phone ${attr(cls)}">
-          <div class="phone__screen">
             <picture>
               <source type="image/avif" srcset="${srcset('avif')}" sizes="${attr(sizes)}">
               <source type="image/webp" srcset="${srcset('webp')}" sizes="${attr(sizes)}">
@@ -158,6 +157,5 @@ export function phone(ctx, slot, alt, { eager = false, priority = false, sizes, 
                 eager ? '' : ' loading="lazy"'
               } decoding="async"${priority ? ' fetchpriority="high"' : ''}>
             </picture>
-          </div>
         </figure>`;
 }

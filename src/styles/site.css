@@ -405,40 +405,17 @@ a.store:hover {
   width: auto;
 }
 
-/* ---------- Phones (frame drawn in CSS around a raw screenshot) ---------- */
+/* ---------- Phones (screenshots exported inside a real iPhone frame) ---------- */
 
 .phone {
   margin: 0;
-  padding: 3.4%;
-  border-radius: 15% / 7.1%;
-  background: #0c0c12;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 0 0 3px rgba(155, 143, 255, 0.08),
-    0 40px 80px -20px rgba(0, 0, 0, 0.8),
-    0 0 120px -20px rgba(94, 62, 243, 0.3);
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 60px rgba(94, 62, 243, 0.22));
 }
-.phone__screen {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12% / 5.6%;
-  background: var(--bg);
-}
-.phone__screen img {
+.phone img {
+  display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 1320 / 2868;
-}
-/* Dynamic Island, so raw screenshots without one look the same as framed exports */
-.phone__screen::after {
-  content: '';
-  position: absolute;
-  left: 39.3%;
-  top: 1.5%;
-  width: 21.4%;
-  height: 3.8%;
-  border-radius: 999px;
-  background: #000;
+  aspect-ratio: 1470 / 3000;
 }
 
 /* ---------- Hero: the promise on the left, a live answer on the right ---------- */
@@ -535,43 +512,38 @@ a.store:hover {
 .answer {
   position: relative;
   width: 100%;
-  max-width: 330px;
+  max-width: 300px;
   margin: 0 auto;
-  padding: 10px;
-  border-radius: 46px;
-  background: #0c0c12;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 0 0 3px rgba(155, 143, 255, 0.08),
-    0 40px 80px -20px rgba(0, 0, 0, 0.8),
-    0 0 140px -10px rgba(94, 62, 243, 0.45);
+  aspect-ratio: 1470 / 3000;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 70px rgba(94, 62, 243, 0.35));
 }
+/* The live screen sits in the frame's screen hole: 75,66 → 1320×2868 of 1470×3000 */
 .answer__screen {
   --tone: var(--good);
-  position: relative;
+  position: absolute;
+  left: 5.1%;
+  top: 2.2%;
+  width: 89.8%;
+  height: 95.6%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 18px;
-  min-height: 470px;
-  padding: 64px 22px 26px;
-  border-radius: 37px;
+  padding: 16% 20px 20px;
+  border-radius: 13% / 6%;
   overflow: hidden;
   text-align: center;
   background:
     radial-gradient(120% 60% at 80% 0%, rgba(94, 62, 243, 0.28), transparent 70%),
     var(--bg);
 }
-.answer__screen::before {
-  content: '';
+.answer__frame {
   position: absolute;
-  top: 12px;
-  left: 50%;
-  width: 34%;
-  height: 26px;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  background: #000;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 .tone-yes { --tone: #4caf7d; --tone-bg: rgba(76, 175, 125, 0.11); --tone-line: rgba(76, 175, 125, 0.4); --tone-glow: rgba(76, 175, 125, 0.22); }
 .tone-no { --tone: #e05555; --tone-bg: rgba(224, 85, 85, 0.11); --tone-line: rgba(224, 85, 85, 0.4); --tone-glow: rgba(224, 85, 85, 0.22); }
@@ -1342,11 +1314,10 @@ html.is-android .stores.is-live .stores__item--ios {
     width: 100%;
   }
   .answer {
-    max-width: 280px;
+    max-width: 260px;
   }
   .answer__screen {
-    min-height: 0;
-    padding: 54px 16px 20px;
+    padding: 16% 14px 16px;
     gap: 12px;
   }
   .answer__q {

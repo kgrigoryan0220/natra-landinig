@@ -29,9 +29,7 @@ background:radial-gradient(700px 420px at 92% -10%,rgba(94,62,243,.42),transpare
 h1{font:600 76px/1.02 C;margin:0 0 26px;letter-spacing:-.005em}
 p.promise{font:italic 300 46px/1.15 C;color:#F0EEF8;margin:0 0 30px}
 p.sub{font:400 22px/1.5 S;color:#B9B5CC;margin:0;max-width:520px}
-.phone{position:absolute;padding:9px;border-radius:44px/44px;background:#0c0c12;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 0 0 3px rgba(155,143,255,.08),0 30px 80px -20px #000,0 0 120px -20px rgba(94,62,243,.5)}
-.phone div{position:relative;overflow:hidden;border-radius:36px}
-.phone div::after{content:'';position:absolute;left:39.3%;top:1.5%;width:21.4%;height:3.8%;border-radius:99px;background:#000}
+.phone{position:absolute;filter:drop-shadow(0 30px 40px rgba(0,0,0,.7)) drop-shadow(0 0 50px rgba(94,62,243,.35))}
 .phone img{display:block;width:100%}
 .p1{width:270px;left:850px;top:70px;z-index:2}
 .p2{width:236px;left:705px;top:150px;opacity:.9}
@@ -42,8 +40,8 @@ p.sub{font:400 22px/1.5 S;color:#B9B5CC;margin:0;max-width:520px}
   <h1>Ask a question.<br>Get a clear answer.</h1>
   <p class="sub">Yes, no, maybe or not yet — read from the chart of the moment you ask, with the reasons in plain words.</p>
 </div>
-<div class="phone p2"><div><img src="${await shot('compatibility')}"></div></div>
-<div class="phone p1"><div><img src="${await shot('ask-verdict')}"></div></div>
+<div class="phone p2"><img src="${await shot('compatibility')}"></div>
+<div class="phone p1"><img src="${await shot('ask-verdict')}"></div>
 </body></html>`;
 
 const chromium = await loadChromium();

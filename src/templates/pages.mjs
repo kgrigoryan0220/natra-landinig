@@ -26,7 +26,7 @@ const CHEV = `<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill=
 
 // The answer screen from the app, drawn in HTML: question, verdict, confidence, reading.
 // site.js swaps its content when a question chip is pressed.
-function answerPhone(H, ex) {
+function answerPhone(ctx, H, ex) {
   return `<figure class="answer" aria-label="${attr(H.demoLabel)}">
               <div class="answer__screen tone-${attr(ex.tone)}" data-answer aria-live="polite">
                 <p class="answer__q" data-answer-q>“${esc(ex.q)}”</p>
@@ -35,6 +35,7 @@ function answerPhone(H, ex) {
                 <p class="answer__reading" data-answer-reading>${esc(ex.reading)}</p>
                 <p class="answer__label">${esc(H.exampleLabel)}</p>
               </div>
+              <img class="answer__frame" src="/${ctx.assets.frame.file}" width="${ctx.assets.frame.width}" height="${ctx.assets.frame.height}" alt="" fetchpriority="high">
             </figure>`;
 }
 
@@ -56,7 +57,7 @@ export function homePage(ctx) {
             ${soon}
           </div>
           <div class="hero__demo">
-            ${answerPhone(H, H.examples[0])}
+            ${answerPhone(ctx, H, H.examples[0])}
             <div class="tries" data-tries hidden>
               <p class="micro">${esc(H.tryLabel)}</p>
               <div class="tries__list">

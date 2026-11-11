@@ -4,12 +4,8 @@
   "ui": {
     "skip": "Skip to content",
     "nav": {
-      "ask": "Ask the chart",
-      "layers": "Inside",
-      "compatibility": "Compatibility",
-      "support": "Support",
       "label": "Main",
-      "faq": "FAQ"
+      "support": "Support"
     },
     "homeLabel": "Natra, home",
     "storeSoon": "Coming soon",
@@ -24,9 +20,7 @@
     "documentLabel": "Document",
     "contents": "Contents",
     "backToTop": "Back to top",
-    "example": "Example",
-    "menu": "Menu",
-    "carouselHint": "Swipe for more"
+    "getApp": "Get the app"
   },
   "footer": {
     "privacy": "Privacy",
@@ -37,201 +31,107 @@
   "landing": {
     "meta": {
       "title": "Natra — Birth Chart, Horoscope & Love Compatibility",
-      "description": "Natra is personal astrology built on your birth chart: a daily horoscope about you, love compatibility, a portrait of who you are and clear answers to yes-or-no questions. Coming to iPhone and Android."
+      "description": "Ask a yes-or-no question and get a clear answer from the chart of the moment. Natra is astrology built on your own birth chart: daily horoscope, love compatibility and a portrait in plain words."
     },
     "hero": {
-      "eyebrow": "Birth chart · Horoscope · Compatibility",
-      "title": "Natra",
-      "promise": "A personal astrologer that explains, not scares.",
-      "lead": "Your date, time and place of birth become your birth chart. Natra turns it into clear daily hints, a portrait of who you are, love compatibility and answers to the questions on your mind.",
-      "note": "Coming to iPhone and Android.",
-      "phonesLabel": "Natra app screens"
-    },
-    "ask": {
-      "eyebrow": "Ask the chart",
+      "kicker": "Natra · astrology from your own birth chart",
       "title": "Ask a question. Get a clear answer.",
-      "lead": "Will this relationship work out? Should you take the job? Type a yes-or-no question. Natra casts the chart of the minute you ask and reads it for you: a verdict, how confident the reading is, what it means in plain words and the key factors behind it.",
+      "sub": "Will it work out? Should you take the job? Natra reads the chart of the moment you ask and tells you yes, no, maybe or not yet — and why.",
+      "soon": "Coming soon to iPhone and Android.",
+      "tryLabel": "Try a question",
+      "exampleLabel": "Example reading",
+      "confidenceLabel": "Confidence",
+      "demoLabel": "Example of an answer in Natra",
+      "examples": [
+        {
+          "q": "Will this relationship work out?",
+          "verdict": "YES",
+          "tone": "yes",
+          "confidence": 78,
+          "reading": "The chart leans toward yes. You are both in a strong position and moving toward each other. Say what you want plainly."
+        },
+        {
+          "q": "Should I take this job offer?",
+          "verdict": "NOT YET",
+          "tone": "notyet",
+          "confidence": 61,
+          "reading": "The offer is real, but the terms are not settled yet. Ask your questions first; the picture gets clearer within weeks."
+        },
+        {
+          "q": "Is this the right time to move?",
+          "verdict": "MAYBE",
+          "tone": "maybe",
+          "confidence": 54,
+          "reading": "The chart is split: the place suits you, the timing is tight. Decide after you have seen the numbers."
+        },
+        {
+          "q": "Will we get back together?",
+          "verdict": "NO",
+          "tone": "no",
+          "confidence": 72,
+          "reading": "The chart points away from a return. The connection was real, but the direction has changed. Put your energy where it is answered."
+        }
+      ]
+    },
+    "how": {
+      "title": "How it works",
       "steps": [
         {
-          "title": "Your question",
-          "text": "One concrete thing: a person, an offer, a move. Ask it so it can be answered yes or no."
+          "title": "Ask",
+          "text": "One concrete question that can be answered yes or no."
         },
         {
           "title": "The chart of the moment",
-          "text": "The chart is cast for the date, time and place where you ask. That moment is where the answer comes from."
+          "text": "Natra casts a chart for the exact minute and place you ask."
         },
         {
-          "title": "The significators",
-          "text": "Natra finds the planets that stand for you and for what you asked about, then reads their dignity, combustion and aspects."
-        },
-        {
-          "title": "The verdict",
-          "text": "Yes, no, maybe or not yet, with a confidence score, a short reading, what to do next and the factors that shaped it."
+          "title": "A clear answer",
+          "text": "A verdict, how confident the reading is, and the reasons in plain words."
         }
       ],
-      "footnote": "The same question within 24 hours gets the same answer. Some topics, like health or death, are not for the chart.",
-      "screenAlt": "Natra answer screen: the question “Will this opportunity work out for me?”, a YES verdict with 78% confidence, the reading and key factors.",
-      "demo": {
-        "chipsLabel": "Popular questions",
-        "chips": [
-          "Will this relationship work out?",
-          "Should I take this opportunity?",
-          "Is this the right time to move?"
-        ],
-        "castLabel": "Chart cast",
-        "castDate": "May 17, 2026 · 14:30",
-        "castPlace": "New York, USA",
-        "factorsLabel": "Key factors",
-        "factors": [
-          {
-            "tone": "good",
-            "text": "Both significators in dignity — strong ability to act"
-          },
-          {
-            "tone": "warn",
-            "text": "Ascendant ruler combust — some details may be hidden from view right now"
-          }
-        ],
-        "verdict": "YES",
-        "confidenceLabel": "Confidence",
-        "confidence": 78
-      }
+      "note": "Ask the same question again within 24 hours and the answer stays the same."
     },
-    "layers": {
-      "eyebrow": "Three layers",
-      "title": "Start with today. Go as deep as you like.",
-      "lead": "Everything in Natra comes from one calculation: your birth chart. You decide how far to read.",
+    "features": {
+      "title": "Your whole chart, in plain words",
       "items": [
         {
-          "label": "01 · Today",
-          "title": "A daily ritual",
-          "text": "A short hint on Home every day. With Natra Pro, open the full forecast — mood, relationships, work, money and your best hours — look ahead with the week view and see which transits are active.",
-          "tags": [
-            "Hint of the day",
-            "This week",
-            "Transits"
-          ],
-          "demo": {
-            "label": "Today's guidance",
-            "text": "A quiet morning will reveal what a busy one would have hidden.",
-            "sourcePrefix": "Based on",
-            "source": "Mercury trine natal Moon",
-            "weekLegend": [
-              "Favourable",
-              "Neutral",
-              "Caution"
-            ],
-            "transit": {
-              "title": "Mercury trine natal Moon",
-              "text": "Clarity in feelings · communication flows easily",
-              "badge": "Strong"
-            }
-          }
+          "slot": "compatibility",
+          "title": "Love compatibility, chart to chart",
+          "text": "Add your partner's birth details and see where you click and where you will need patience.",
+          "alt": "Natra compatibility screen: You + Alex, a 78% match, areas of connection and compatibility dimensions."
         },
         {
-          "label": "02 · Your chart",
+          "slot": "home",
+          "title": "A daily horoscope that is actually about you",
+          "text": "A short hint every morning, read from your own chart — not written for everyone born that month.",
+          "alt": "Natra Home screen: today's guidance, a colour-coded week and planets in motion."
+        },
+        {
+          "slot": "chart-wheel",
           "title": "Your birth chart, explained simply",
-          "text": "The wheel of your natal chart and a card for every planet and point: the sign, the house and what it says about you, in everyday words. Start with your Sun, Moon and Rising.",
-          "tags": [
-            "Chart wheel",
-            "Big three",
-            "Every placement"
-          ],
-          "demo": {
-            "label": "Sun · Gemini",
-            "house": "9th House",
-            "title": "Curious by design",
-            "text": "Your identity moves through questions, not answers. You're at your most alive when something new is on the table."
-          }
-        },
-        {
-          "label": "03 · Deeper",
-          "title": "When you want the whole story",
-          "text": "The full portrait — your main themes, love, work, talents and shadow side. Compatibility with the people in your life. And questions to the chart when you need a clear answer.",
-          "tags": [
-            "Full portrait",
-            "Compatibility",
-            "Questions"
-          ],
-          "demo": {
-            "matches": [
-              {
-                "title": "You + Alex",
-                "details": "Dec 14, 1996 · New York",
-                "score": 78
-              },
-              {
-                "title": "You + Sofia",
-                "details": "Aug 21, 1998 · Paris",
-                "score": 91
-              }
-            ],
-            "scoreLabel": "compatibility"
-          }
+          "text": "Your Sun, Moon and Rising, and a plain-words card for every planet.",
+          "alt": "Natra chart screen: a natal chart wheel and a card for Sun in Gemini in the 9th house."
         }
-      ],
-      "homeAlt": "Natra Home screen: today's guidance, a colour-coded week and planets in motion.",
-      "chartAlt": "Natra chart screen: a natal chart wheel for 12 Oct 1994, 14:42, Berlin, and a card for Sun in Gemini in the 9th house."
+      ]
     },
-    "compatibility": {
-      "eyebrow": "Love compatibility",
-      "title": "Chart to chart, not sign to sign.",
-      "lead": "Add your partner's birth details and see how your two charts meet. This is synastry: your charts read together, not just two zodiac signs side by side.",
-      "points": [
+    "trust": {
+      "title": "What you can count on",
+      "items": [
         {
-          "title": "Your match",
-          "text": "One percentage with a short summary of you as a pair."
+          "title": "Real calculation",
+          "text": "Every reading comes from your exact birth date, time and place."
         },
         {
-          "title": "Areas and dimensions",
-          "text": "Emotional connection, love and romance, communication and a shared future — where the bond is strong and where it has room to grow."
+          "title": "Plain words",
+          "text": "No jargon, no mysticism, nothing written to scare you."
         },
         {
-          "title": "Your partner's chart",
-          "text": "Their details in one place, and their full chart a tap away."
+          "title": "Your data stays yours",
+          "text": "Not sold, not used for ads. Delete your account any time."
         }
       ],
-      "screenAlt": "Natra compatibility screen: You + Alex, a 78% match, areas of connection and compatibility dimensions.",
-      "demo": {
-        "score": 78,
-        "scoreLabel": "match",
-        "headline": "Strong Connection",
-        "summary": "A rare share of values with real, workable friction to grow through.",
-        "areasLabel": "Areas of connection",
-        "areas": [
-          "Emotional depth",
-          "Shared humor",
-          "Creative synergy",
-          "Mutual ambition"
-        ],
-        "dimsLabel": "Compatibility dimensions",
-        "dims": [
-          {
-            "key": "heart",
-            "title": "Emotional connection",
-            "pct": 85
-          },
-          {
-            "key": "romance",
-            "title": "Love & romance",
-            "pct": 61
-          },
-          {
-            "key": "talk",
-            "title": "Communication",
-            "pct": 72
-          },
-          {
-            "key": "future",
-            "title": "Shared future",
-            "pct": 66
-          }
-        ],
-        "partnerLabel": "Their info",
-        "partnerName": "Alex",
-        "partnerDetails": "Sagittarius · Dec 14, 1996 · New York",
-        "partnerLink": "View chart"
-      }
+      "note": "Natra is for reflection and entertainment. It does not replace a doctor, lawyer or financial adviser.",
+      "ratingLabel": "App Store rating"
     },
     "faq": {
       "eyebrow": "Questions",
@@ -257,8 +157,7 @@
       "more": "More answers on the Support page"
     },
     "closing": {
-      "title": "Your chart, read in plain words.",
-      "text": "Natra is coming to iPhone and Android."
+      "title": "What is your question?"
     },
     "facts": {
       "eyebrow": "At a glance",

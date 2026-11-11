@@ -51,6 +51,7 @@ npm run preview
 | Адрес сайта (`SITE_URL`), почта, копирайт, ID в App Store | `site.config.mjs` |
 | Ссылки на сторы и официальные значки | `site.config.mjs` → `stores`; файлы значков — в `src/assets/badges/` |
 | Все тексты лендинга, поддержки и 404 | `content/en/site.json` |
+| Рейтинг в сторах над блоком доверия (только настоящий, после релиза) | `site.config.mjs` → `rating` |
 | Privacy Policy и Terms of Use | `content/en/legal/privacy.md`, `content/en/legal/terms.md` |
 | Скриншоты | `src/assets/screenshots/` |
 | Иконка приложения (favicon и иконки) | `src/assets/icon/app-icon.png` |
@@ -70,12 +71,12 @@ npm run preview
 
 | Слот | Где показывается |
 |---|---|
-| `home.png` | Hero (левый телефон) |
-| `chart-wheel.png` | Hero (центральный телефон) и картинка для соцсетей |
-| `compatibility.png` | Hero (правый телефон) |
-| `ask-verdict.png` | Блок «Ask the chart» и картинка для соцсетей |
+| `compatibility.png` | Главная, ряд «Love compatibility» и картинка для соцсетей |
+| `home.png` | Главная, ряд «A daily horoscope» |
+| `chart-wheel.png` | Главная, ряд «Your birth chart» |
+| `ask-verdict.png` | Картинка для соцсетей (`npm run og`) и разметка Schema.org |
 
-Остальные «экраны» на лендинге — не картинки, а вёрстка: живые копии компонентов приложения (вопросы, вердикт, карточка дня, неделя, совместимость). Их тексты лежат в `content/en/site.json` → `demo`.
+Пример ответа в первом экране — не картинка, а вёрстка: вопрос, вердикт, уверенность и чтение. Четыре примера и их тексты лежат в `content/en/site.json` → `landing.hero.examples`; чипы под телефоном переключают их.
 
 - **Сырой снимок экрана** без рамки (например, из `raw2/`): скопируйте его поверх файла с тем же именем, например `src/assets/screenshots/home.png`. Подходят `.png`, `.jpg` и `.webp`. Рамку телефона и «островок» сайт дорисует сам.
 - **Снимок уже в рамке** (как экспорт 976×2000 из кейс-стади): сначала вырежьте экран командой `npm run crop-framed -- путь/к/файлу.webp home`.

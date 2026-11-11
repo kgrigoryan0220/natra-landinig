@@ -82,7 +82,7 @@ async function main() {
   const ogSrc = p('src/assets/og/og-image.png');
   if (!existsSync(ogSrc)) throw new Error('Missing src/assets/og/og-image.png — run `npm run og` first.');
   const og = await fs.readFile(ogSrc);
-  assets.og = { file: `assets/og.${hash(og)}.png`, alt: 'Natra — a personal astrologer that explains, not scares.' };
+  assets.og = { file: `assets/og.${hash(og)}.png`, alt: 'Natra — ask a question, get a clear answer.' };
   await write(assets.og.file, og);
 
   // Official store badges, if the owner added them

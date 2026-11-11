@@ -335,3 +335,33 @@ Lighthouse 12.8.2, headless Chromium, сайт отдавался через `np
 ### v3.3 — Cloudflare Diagnostics для ИИ-агентов (2026-11-10)
 - **Content Signals** возвращены в `robots.txt`: `search=yes, ai-input=yes, ai-train=yes`. Раньше строку убрали из-за Lighthouse; для агентов она важнее. Цена: Lighthouse SEO 92 вместо 100 из-за «неизвестной директивы», поисковики её игнорируют. Managed robots.txt от Cloudflare не включаем: он по умолчанию ставит `ai-train=no` и закрывает часть ИИ-ботов.
 - **Markdown Negotiation:** функция Cloudflare Pages `functions/_middleware.js` отдаёт Markdown-версию страницы на `Accept: text/markdown` (с `Link: rel=canonical`, `Vary: Accept`, `X-Markdown-Tokens`); браузеры получают HTML. Функция включена только для четырёх адресов страниц (`dist/_routes.json`). Проверено локально в `wrangler pages dev`: markdown на `text/markdown` и на `text/markdown, text/html;q=0.9`; HTML для браузерного Accept, `*/*` и когда HTML предпочтительнее.
+
+## v4 — продающая главная по брифу `40-landing-rework-brief.md` (2026-11-11)
+
+Главная переделана по брифу (P0 и P1). Support, Privacy, Terms, 404 не менялись, кроме общей шапки.
+
+**Структура:** hero с живым примером → How it works → три ряда «скриншот + одна фраза» → What you can count on → FAQ → «What is your question?».
+
+- **Hero:** H1 `Ask a question. Get a clear answer.`, подзаголовок, кнопки сторов. Справа (на телефоне — ниже) телефон, свёрстанный как экран ответа, и четыре чипа: YES 78% / NOT YET 61% / MAYBE 54% / NO 72%. Подпись `Example reading`. Без JavaScript виден первый пример.
+- **Удалено:** три телефона в hero, демо-компоненты шагов, блок «Three layers», HTML-копия отчёта совместимости, меню-гамбургер, карусели, жаргон (significators, dignity, combustion), «Natra Pro» вне FAQ.
+- **Кнопки сторов после релиза:** на iPhone только App Store, на Android только Google Play, на десктопе обе; кнопка `Get the app` в шапке на телефоне; прилипающая панель снизу появляется после первого экрана и прячется у финальных кнопок. Проверено на временной сборке со вписанными ссылками (Chromium и WebKit).
+- **Рейтинг:** `site.config.mjs` → `rating: null`; пока `null`, на странице ничего нет.
+
+**Цифры (было → стало):**
+
+| | Было | Стало | Цель |
+|---|---|---|---|
+| Видимые слова в `<main>` (без ответов FAQ) | ~740 | 379 (356 + 23 в чипах) | ≤ 380 |
+| Карточки и плашки с рамкой | 20 | 0 (+ телефон, плашка чтения, гармошка FAQ) | ≤ 6 |
+| Метки капсом | 13 | 1 (`Try a question`) + подпись `Example reading` | ≤ 3 |
+| Телефоны на странице | 4 | 1 свёрстанный + 3 скриншота в рядах | — |
+| Высота на телефоне 390 px | 6 228 px | 4 745 px | ≤ 4 800 |
+| Lighthouse (мобильный) | 98–99 / 100 / 100 / 92 | **99 / 100 / 100 / 92** | ≥ 95 / 100 / 100 |
+
+SEO 92 — из-за строки `Content-Signal` в `robots.txt` (решение v3.3).
+
+**Проверки:** `npm run qa -- --browsers=webkit,chromium` без ошибок; `npm run check` — Privacy и Terms дословно; гармошки, `/support#…`, открытие страниц сверху работают; `/index.md` и `llms.txt` собраны из новых текстов; картинка для соцсетей перерисована.
+
+**Нужно от владельца:** вычитать четыре примера чтений; подтвердить вердикты YES / NO / MAYBE / NOT YET; новые скриншоты `compatibility`, `home`, `chart-wheel`, `ask-verdict` (без «Ask AI»); в день релиза — ссылки и значки сторов в `site.config.mjs`.
+
+**Не сделано (P2 брифа):** QR-код и адрес `/get` для десктопа, проброс рекламных меток в ссылки сторов.

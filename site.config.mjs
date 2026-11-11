@@ -31,6 +31,10 @@ export default {
     },
   },
 
+  // Store rating, shown above "What you can count on" once the app has real ratings.
+  // Leave null until then. Never put made-up numbers here.
+  rating: null, // e.g. { value: '4.8', label: 'on the App Store' }
+
   // Languages. Each one needs content/<code>/site.json and content/<code>/legal/*.md.
   // The default language is served from the root (/privacy), others from /<code>/ (/ru/privacy).
   defaultLocale: 'en',

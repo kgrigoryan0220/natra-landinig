@@ -1,6 +1,6 @@
 # Privacy Policy — Natra
 
-**Last updated:** November 12, 2026
+**Last updated:** November 13, 2026
 
 This Privacy Policy explains how **Natra** (“Natra,” “we,” “us,” or “our”) collects, uses, stores, and shares information when you use the Natra mobile application on iOS and Android (the “App”).
 
@@ -94,26 +94,28 @@ We do **not** sell your personal information.
 
 ## 4. How readings are created and how AI is used
 
+Every reading in Natra is based on astrological calculations. AI does not decide what your chart says: it is used only to understand your question and to put the results of the calculations into clear, readable text.
+
 To create personal content, the data needed for a specific request is processed by our application servers and by the providers below. They process it on our behalf and only to fulfill that request.
 
 ### 4.1 Astrology calculations
 
-**Astrology API (astrology-api.io)** calculates natal charts, forecasts, transits, and compatibility from birth details (date, time, and place of birth, and for compatibility reports, the same details of the other person). These calculations do not use AI.
+**Astrology API (astrology-api.io)** calculates natal charts, forecasts, transits, and compatibility from birth details (date, time, and place of birth, and for compatibility reports, the same details of the other person). These calculations do not use AI. For questions, the answer (yes, no, maybe or not yet), its confidence and the key factors come from the horary chart calculated for the moment and place of the question.
 
 ### 4.2 Third-party AI
 
-Two providers process data with AI models:
+Two providers use AI models in this process:
 
-- **Google Gemini** writes and translates reading text.
+- **Google Gemini** turns calculation results and interpretation texts into readable text and translates it.
   - For portraits, forecasts, transits, and compatibility reports, Gemini receives only calculation results (planet positions, aspects, and interpretation texts). It does **not** receive your name, the other person’s name, birth dates, places, email, or account identifiers. For compatibility reports it may receive the other person’s gender so the text is grammatically correct.
-  - For questions (“Ask”), Gemini receives the text of your question and of the questions you asked in the previous 24 hours (to recognize a repeated question). It uses them to check whether the question can be answered and to write the answer.
-- **Astrology API (question charts)** — for questions, Astrology API receives the text of your question, the date and time it is asked, the city and country, coordinates rounded to about 1 km, and your language. Its question service uses AI models to classify the question and draft an answer, and it calculates the chart for the moment of the question.
+  - For questions (“Ask”), Gemini receives the text of your question and of the questions you asked in the previous 24 hours (to recognize a repeated question). It uses them to check that the question can be answered from a chart (for example, that it is a yes/no question and not about health) and to phrase the answer from the calculated verdict and factors. It does not change the verdict.
+- **Astrology API (question charts)** — for questions, Astrology API receives the text of your question, the date and time it is asked, the city and country, coordinates rounded to about 1 km, and your language. Its question service uses AI models to identify what the question is about (which part of the chart it concerns) and to summarize the result; the chart and the verdict are calculated by the rules of horary astrology.
 
 ### 4.3 Your consent
 
 Before your first question is sent, the App explains that the text of your question is sent to the AI services Google Gemini and Astrology API and asks for your permission. Nothing is sent to them before you tap **Agree**.
 
-You can withdraw consent at any time in **Profile → AI answers to questions**. After that, the App asks again before your next question. Without this consent the Ask feature cannot answer questions; other features keep working.
+You can withdraw consent at any time by writing to **astrologyapp@outlook.com** from the email linked to your account, or by deleting your account in Profile → Delete account. After we process your request, the App asks for your permission again before your next question, and nothing is sent to these providers unless you agree. Without this consent the Ask feature cannot answer questions; other features keep working.
 
 Generated text is based on astrology calculations and may be inaccurate or incomplete; see our Terms of Use.
 
@@ -139,8 +141,8 @@ We share personal information only with providers that help us run Natra and onl
 | Supabase | Authentication and database |
 | Railway | Hosting of our backend servers |
 | Upstash | Temporary caching and rate limiting |
-| Astrology API (astrology-api.io) | Astrology calculations; for questions, AI-based classification and answer drafting (see Section 4) |
-| Google (Gemini API) | AI writing and translation of reading text; checking and answering questions (see Section 4) |
+| Astrology API (astrology-api.io) | Astrology calculations; for questions, AI-based identification of the question topic and summary of the result (see Section 4) |
+| Google (Gemini API) | Turning calculation results into readable text and translating it; checking questions and phrasing answers (see Section 4) |
 | Google (Places / Geocoding) | Place search and nearest city |
 | Google (Firebase Analytics, Firebase Crashlytics) | Usage analytics and crash reports |
 | RevenueCat | Managing subscriptions and purchases (may also receive your first name to personalize purchase screens) |
@@ -181,7 +183,6 @@ When you delete your account, we permanently delete account-linked data and the 
 
 - edit your profile and birth details;
 - change the language;
-- turn AI answers to questions on or off in Profile → AI answers to questions (see Section 4.3);
 - allow or deny location access in your device settings;
 - sign out;
 - **delete your account** in Profile → Delete account. This permanently removes your Natra account and linked data, such as birth details, portrait, compatibility reports, and questions and answers.
@@ -202,7 +203,7 @@ Where the GDPR or UK GDPR applies, we rely on:
 
 - **performance of a contract** — to provide the App and the features and purchases you request (account, readings, reports, answers, quotas);
 - **legitimate interests** — to keep the service secure, prevent abuse, fix crashes, and understand and improve how the App is used, in ways that do not override your rights;
-- **consent** — for device location (you can withdraw it in your device settings at any time), for sending the text of your questions to third-party AI providers (you can withdraw it in Profile → AI answers to questions), and wherever the law requires consent;
+- **consent** — for device location (you can withdraw it in your device settings at any time), for sending the text of your questions to third-party AI providers (you can withdraw it by contacting us, see Section 4.3), and wherever the law requires consent;
 - **legal obligation** — to keep records required by law and to respond to lawful requests.
 
 ---
@@ -269,7 +270,7 @@ We may update this Privacy Policy from time to time. We will change the “Last 
 ## Summary (plain language)
 
 - We collect your birth details, account info, questions, and (with permission) location to provide astrology features.
-- Before your first question, we ask your permission to send its text to AI providers (Google Gemini and Astrology API). You can turn this off in Profile.
+- Readings come from astrological calculations; AI only helps understand your question and phrase the result. Before your first question, we ask your permission to send its text to these AI providers (Google Gemini and Astrology API). You can withdraw it at any time by contacting us.
 - We use analytics and crash reports to improve the App, without advertising and without tracking you across other apps.
 - Our providers (database, hosting, astrology calculations, AI text, place search, analytics, purchases) process data only for us.
 - We do not sell your data.
